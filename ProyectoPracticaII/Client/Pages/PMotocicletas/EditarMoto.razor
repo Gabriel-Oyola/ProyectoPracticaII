@@ -1,0 +1,60 @@
+﻿@page "/PMotocicletas/EditarMoto/{MotoId:int}"
+@using ProyectoPracticaII.Client.Models;
+@inject IHttpService http
+@inject NavigationManager NavigatorManager
+
+<h3> Actualizar datos de Moto</h3>
+
+<FormMoto moto="moto" onCancel="Cancelar" /> 
+
+
+
+
+@code {
+    Motocicleta moto = new Motocicleta();
+    [Parameter] public int MotoId { get; set; } 
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Mostrar();
+    }
+
+
+    private async Task Mostrar()
+    {
+        var respuesta = await http.Get<Motocicleta>($"api/Motocicleta/{MotoId}");
+        if (respuesta.Error)
+        {
+            var body = respuesta.Respuesta;
+        }
+        else
+        {
+            moto= respuesta.Respuesta;
+        }
+    }
+
+
+    private async void Grabar()
+    {
+        var respuesta = await http.Put<Motocicleta>($"api/Motocicleta/{MotoId}", moto);
+        if (respuesta.Error)
+        {
+            var body = respuesta.HttpResponseMessage;
+
+        }
+        NavigatorManager.NavigateTo("/ListaMotocicletas");
+    }
+
+
+    public async Task ActualizarMoto()
+    {
+        var result = await http.Put<Motocicleta>($"api/Motocicleta/{moto.IdMoto}", moto);
+        
+    }
+
+    private void Cancelar()
+    {
+        NavigatorManager.NavigateTo($"/PMotocicletas/ListaMotocicletas/{moto.IdUsuario}");
+    }
+}

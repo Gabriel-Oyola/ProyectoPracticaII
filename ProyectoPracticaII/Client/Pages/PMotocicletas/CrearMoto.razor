@@ -1,0 +1,43 @@
+﻿@page "/PMotocicletas/CrearMoto"
+@using ProyectoPracticaII.Client.Models;
+@inject IHttpService http
+@inject NavigationManager NavigatorManager 
+
+<h1>Editar datos de moto</h1> 
+
+<EditForm Model="NuevaMotocicleta">
+    <label>IdUsuario</label>
+    <InputNumber @bind-Value=NuevaMotocicleta.IdUsuario>Marca</InputNumber>
+    <label>Marca</label>
+    <InputText @bind-Value=NuevaMotocicleta.Marca>Marca</InputText>
+    <label>Modelo</label>
+    <InputText @bind-Value=NuevaMotocicleta.Modelo>Modelo</InputText>
+    <label>Año</label>
+    <InputNumber @bind-Value=NuevaMotocicleta.Año>Año</InputNumber>
+    <label>Patente</label>
+    <InputText @bind-Value=NuevaMotocicleta.Patente>Patente</InputText>
+    <label>Aseguradora</label>
+    <InputText @bind-Value=NuevaMotocicleta.Aseguradora>Aseguradora</InputText>
+
+
+    <button @onclick="(()=>CrearMotoU(NuevaMotocicleta))">Crear Motocicleta</button>
+
+
+
+
+</EditForm>
+
+@code {
+    Motocicleta NuevaMotocicleta = new Motocicleta();
+    [Parameter] public int login { get; set; }
+    public async Task CrearMotoU(Motocicleta motocicleta)
+    {
+        var resultado = await http.Post<Motocicleta>("api/Motocicleta", NuevaMotocicleta);
+        if (resultado.Error)
+        {
+            var body = resultado.HttpResponseMessage;
+            NavigatorManager.NavigateTo("/Productos");
+        }
+    }
+
+}

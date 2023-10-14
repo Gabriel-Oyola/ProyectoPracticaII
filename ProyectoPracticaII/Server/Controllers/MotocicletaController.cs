@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
+using System;
 
 namespace ProyectoPracticaII.Server.Controllers
 {
@@ -19,30 +20,53 @@ namespace ProyectoPracticaII.Server.Controllers
             this.motored01Context = motored01Context;
         }
 
+        //[HttpGet("{id:int}")]
+
+        //public async Task<ActionResult<List<Motocicleta>>> GetMotocicleta(int id)
+        //{
+        //    var lista = await motored01Context.Motocicletas.Where(e => e.IdUsuario == id).ToListAsync();
+        //    return Ok(lista);
+        //}
+
+        //[HttpGet]
+        //public async Task<ActionResult<List<Motocicleta>>> Get()
+        //{
+        //    var resp = await motored01Context.Motocicletas.ToListAsync();
+        //    return resp;
+        //}
+
+
+
+        //[HttpGet]
+        //[Route("{id}")]
+        //public async Task<ActionResult<List<Motocicleta>>> GetSingleMotocicleta(int id)
+        //{
+        //    var miobjeto = await motored01Context.Motocicletas.FirstOrDefaultAsync(ob => ob.IdMoto == id);
+        //    if (miobjeto == null)
+        //    {
+        //        return NotFound(" :/");
+        //    }
+
+        //    return Ok(miobjeto);
+
+
+
+        //}
+
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<List<Motocicleta>>> GetMotocicleta(int id)
+        
+        public async Task<ActionResult<Motocicleta>> Get(int id)
         {
-            var lista = await motored01Context.Motocicletas.Where(e => e.IdUsuario == id ).ToListAsync();
-            return Ok(lista);
-        }
-
-
-        [HttpGet]
-        [Route("{id}")]
-        public async Task<ActionResult<List<Motocicleta>>> GetSingleMotocicleta(int id)
-        {
-            var miobjeto = await motored01Context.Motocicletas.FirstOrDefaultAsync(ob => ob.IdMoto == id);
-            if (miobjeto == null)
+            var Producto = await motored01Context.Motocicletas
+                                         .Where(e => e.IdMoto == id)
+                                         //.Include(m => m.Matriculas)
+                                         .FirstOrDefaultAsync();
+            if (Producto == null)
             {
-                return NotFound(" :/");
+                return NotFound($"No existe el producto de Id={id}");
             }
-
-            return Ok(miobjeto);
-
-
-
+            return Producto;
         }
-
 
         [HttpPost]
 
@@ -55,7 +79,7 @@ namespace ProyectoPracticaII.Server.Controllers
         }
 
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<List<Motocicleta>>> UpdateMotocicleta(Motocicleta objeto)
         {
 

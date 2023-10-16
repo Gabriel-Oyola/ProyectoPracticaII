@@ -115,10 +115,16 @@ tr:hover {
         box-shadow: 0 0 5px #bd0003,0 0 20px #bd0003, 0 0 60px #bd0003, 0 0 150px #bd0003;
     }
 
-.Footer {
+Footer {
     color: #bd0003;
     background-color: black;
     text-align: center;
-    height: 2rem 3px;
-    padding: 1rem;
+    position:absolute; 
+    width:100%;
+    bottom: 0; 
+    left: 0;
+    padding: 2rem 8%; 
+    display: flex;
+    flex-direction: column;
+
 }

@@ -57,15 +57,15 @@ namespace ProyectoPracticaII.Server.Controllers
         
         public async Task<ActionResult<Motocicleta>> Get(int id)
         {
-            var Producto = await motored01Context.Motocicletas
+            var Moto = await motored01Context.Motocicletas
                                          .Where(e => e.IdMoto == id)
                                          //.Include(m => m.Matriculas)
                                          .FirstOrDefaultAsync();
-            if (Producto == null)
+            if (Moto == null)
             {
-                return NotFound($"No existe el producto de Id={id}");
+                return NotFound($"No existe la motocicleta de Id={id}");
             }
-            return Producto;
+            return Moto;
         }
 
         [HttpPost]

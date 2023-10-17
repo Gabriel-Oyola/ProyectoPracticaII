@@ -1,0 +1,41 @@
+﻿@page "/PTaller/EditarTaller/{TallerId:int}"
+@using ProyectoPracticaII.Client.Models;
+@inject IHttpService http
+@inject NavigationManager NavigatorManager
+
+
+
+<FormTaller taller="taller" onCancel="Cancelar" />
+
+
+
+
+@code {
+    Taller taller = new Taller();
+    [Parameter] public int TallerId { get; set; }
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Mostrar();
+    }
+
+
+    private async Task Mostrar()
+    {
+        var respuesta = await http.Get<Taller>($"api/Taller/{TallerId}");
+        if (respuesta.Error)
+        {
+            var body = respuesta.Respuesta;
+        }
+        else
+        {
+            taller = respuesta.Respuesta;
+        }
+    }
+
+    private void Cancelar()
+    {
+        NavigatorManager.NavigateTo($"/PTaller/ListaTaller/{taller.IdUsuario}");
+    }
+}

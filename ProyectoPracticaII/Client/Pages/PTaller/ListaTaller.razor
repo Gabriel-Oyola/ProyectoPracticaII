@@ -77,9 +77,9 @@
                         <td>@item.Email</td>
                         <td>@item.Numero</td>
                         <td>@item.Horarios</td>
-                      @*  <td>
-                            <a class="btn btn-primary" href="/PMotocicletas/EditarMoto/"> Editar</a>
-                        </td>*@
+                        <td>
+                            <a class="btn btn-primary" href="/PTaller/EditarTaller/@item.IdTaller"> Editar</a>
+                        </td>
 
                         <td>
                             <button class="btn btn-warning" @onclick="()=>EliminarTaller(item.IdTaller)">

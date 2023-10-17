@@ -38,7 +38,7 @@
 
     <br />
     <div class="btnCentrado">
-        <a class="btnCrear" href="/PMotocicletas/CrearMoto"> REGISTRAR UN NUEVO TALLER</a>
+        <a class="btnCrear" href="/PTaller/CrearT"> REGISTRAR UN NUEVO TALLER</a>
     </div>
    
     <div id="main-container">
@@ -77,9 +77,9 @@
                         <td>@item.Email</td>
                         <td>@item.Numero</td>
                         <td>@item.Horarios</td>
-                        <td>
+                      @*  <td>
                             <a class="btn btn-primary" href="/PMotocicletas/EditarMoto/"> Editar</a>
-                        </td>
+                        </td>*@
 
                         <td>
                             <button class="btn btn-warning" @onclick="()=>EliminarTaller(item.IdTaller)">

@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Motocicleta\**" />
+    <Content Remove="Pages\Motocicleta\**" />
+    <EmbeddedResource Remove="Pages\Motocicleta\**" />
+    <None Remove="Pages\Motocicleta\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.13" PrivateAssets="all" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
@@ -28,8 +35,6 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="Pages\Motocicleta\" />
-    <Folder Include="Pages\PTaller\" />
   </ItemGroup>
 
 </Project>

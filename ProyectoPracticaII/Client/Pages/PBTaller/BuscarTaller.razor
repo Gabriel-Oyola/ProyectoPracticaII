@@ -1,0 +1,192 @@
+﻿@page "/PBTaller/BuscarTaller"
+
+@using ProyectoPracticaII.Client.Models;
+@inject HttpClient http
+@inject IHttpService Ihttp
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   <style>
+        * {
+            margin: 0;
+            padding: 0;
+       
+        }
+        html {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            background-color: gray;
+            flex-direction: column;
+            min-height: 100%;
+            margin: 0;
+        }
+   </style>
+</head>
+<body>
+    <header>
+        <section id="Menu">
+            <ul>
+                <a href="#">Mi Perfil</a>
+                <a href="/PMotocicletas/ListaMotocicletas/">Mis Motos</a>
+                <a href="/PTaller/ListaTaller/">Mi Taller</a>
+                <a href="#">Salir</a>
+            </ul>
+
+        </section>
+    </header>
+
+    <br />
+    <br />
+
+    <iframe src="https://www.google.com/maps/d/embed?mid=1bMEqTnZfVN6LxPWMgR7lwE8r61wozTM&ehbc=2E312F&noprof=1" width="100%" height="500"></iframe>
+    <div class="form-moto">
+        <input type="text" @bind="nombreTaller" class="form-moto" placeholder="Nombre del Taller">
+        <button class="btnC" @onclick="BuscarTalleres">Buscar</button>
+    </div>
+    <br />
+    <div id="main-container">
+
+        <table>
+            <thead>
+                <tr>
+
+                    <th>Nombre del taller</th>
+                    <th>Direccion</th>
+                    <th>-</th>
+                    <th>-</th>
+                    
+                </tr>
+            </thead>
+
+            @if (tallerEncontrado != null)
+            {
+
+
+
+
+                <tr>
+
+                    <td>@tallerEncontrado.NombreTaller</td>
+                    <td>@tallerEncontrado.Direccion</td>
+
+                    @*       <td>
+                            <a class="btn btn-primary" href="/PMotocicletas/EditarMoto/@item.IdMoto"> Editar</a>
+                        </td>
+
+                        <td>
+                            <button class="btn btn-warning" @onclick="()=>EliminarMoto(item.IdMoto)">
+                                Eliminar
+
+                            </button>
+                        </td>*@
+
+
+                </tr>
+
+
+            }
+            else if (NoEncontrado != null)
+            {
+                <tr> No existe taller</tr>
+            }
+          
+          
+
+        </table>
+    </div>
+
+    <br />
+    <br />
+    <Footer>
+    <p> Motored &copy;. Todos los derechos reservados</p>
+    </Footer>
+</body>
+
+
+
+</html>
+@code{
+    private string nombreTaller;
+    private Taller tallerEncontrado;
+    private bool busquedaRealizada = false;
+    private string NoEncontrado= null;
+    [Inject]
+    private HttpClient HttpClient { get; set; }
+    List<Taller> taller;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+
+    }
+
+    private async Task Leer()
+    {
+
+        var respuesta = await   Ihttp.Get<List<Taller>>("api/Opinion");
+        if (!respuesta.Error)
+        {
+            taller = respuesta.Respuesta;
+        }
+    }
+
+
+
+    private async Task BuscarTalleres()
+    {
+        // Realizar la solicitud al controlador de búsqueda
+
+
+
+
+        try
+        {
+            var response = await HttpClient.GetFromJsonAsync<Taller>($"/api/ListaBT/{nombreTaller}");
+            HttpResponseMessage Cresponse = await HttpClient.GetAsync($"/api/talleres/{nombreTaller}");
+
+            if (response != null)
+            {
+                tallerEncontrado = response;
+            }
+            else if (Cresponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                busquedaRealizada = true;
+                tallerEncontrado = null;
+            }
+
+            // Verifica si taller es null o contiene datos inválidos
+            if (response == null)
+            {
+
+
+                // El taller no se encontró; muestra un mensaje apropiado
+                // Puedes establecer una variable de estado para mostrar el mensaje en tu componente Blazor.
+            }
+            else
+            {
+                // El taller se encontró; realiza las operaciones necesarias
+            }
+        }
+        catch (Exception ex)
+        {
+            NoEncontrado = "El taller no existe";
+            tallerEncontrado = null;
+            // Maneja la excepción (por ejemplo, registra el error o muestra un mensaje de error genérico)
+            // No intentes acceder a la respuesta JSON en este punto, ya que no es válida.
+        }
+
+
+
+
+    }
+
+  
+}

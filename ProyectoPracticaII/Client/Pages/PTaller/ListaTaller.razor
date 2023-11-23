@@ -94,23 +94,23 @@
 
                     @if (MostrarModalConfirmacion)
                     {
-                        <div class="modal" style="display: block; color: white;  ">
+                        <div class="modal" style="display: block; color: white; ">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5>Confirmar acción</h5>
-                                        <button type="button" class="btn-close" @onclick="()=>MostrarModalConfirmacion = false"></button>
-                                    </div>
-                                    <div class="modal-body" style="background-color: black; ">
-                                        ¿Está seguro de que desea dar de baja este taller?
-                                    </div>
-                                    <div class="modal-footer" >
-                                        <button type="button" class="btn btn-secondary" @onclick="()=>MostrarModalConfirmacion = false">Cancelar</button>
+                                    
+                                        <h5>CONFIRMAR BAJA DE TALLER</h5>
+
+                                   
+                                    <p>¿Está seguro de que desea dar de baja este taller? </p>
+
+                                  
+                                        
                                         <button type="button" class="btn btn-danger" @onclick="()=>{ DarDeBajaTaller(item.IdTaller); MostrarModalConfirmacion = false; }">Confirmar</button>
+                                    <button type="button" class="btn btn-secondary" @onclick="()=>MostrarModalConfirmacion = false">Cancelar</button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        
                     }
                 }
             }

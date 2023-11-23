@@ -27,6 +27,8 @@ public partial class Taller
 
     public string? LinksMapa { get; set; }
 
+    public string? Estado { get; set; }
+
     public virtual Usuario? IdUsuarioNavigation { get; set; }
 
     public virtual ICollection<Opinione> Opiniones { get; set; } = new List<Opinione>();

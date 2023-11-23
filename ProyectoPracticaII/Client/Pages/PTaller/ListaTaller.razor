@@ -52,6 +52,7 @@
                     <th>Email</th>
                     <th>Numero</th>
                     <th>Horarios</th>
+                    <th>Estado</th>
                     <th>-</th>
                     <th>-</th>
                 </tr>
@@ -77,13 +78,14 @@
                         <td>@item.Email</td>
                         <td>@item.Numero</td>
                         <td>@item.Horarios</td>
+                        <td>@item.Estado</td>
                         <td>
                             <a class="btn btn-primary" href="/PTaller/EditarTaller/@item.IdTaller"> Editar</a>
                         </td>
 
                         <td>
-                            <button class="btn btn-warning" @onclick="()=>EliminarTaller(item.IdTaller)">
-                                Eliminar
+                            <button class="btn btn-warning" @onclick="()=>DarDeBajaTaller(item.IdTaller)">
+                                Dar de baja 
 
                             </button>
                         </td>
@@ -112,9 +114,9 @@
 
 
 @code {
-    List<Taller> talleres;
-    Taller NuevoTaller = new Taller();
-    [Parameter] public int login { get; set; }
+        List<Taller> talleres;
+        Taller NuevoTaller = new Taller();
+        [Parameter] public int login { get; set; }
 
 
     protected override async Task OnInitializedAsync()
@@ -133,7 +135,29 @@
             talleres = respuesta.Respuesta;
         }
     }
+    private async Task DarDeBajaTaller(int id)
+    {
+        try
+        {
+            var response = await http.PutAsync($"api/ListaTaller/ActualizarEstado/{id}", null);
 
+            if (response.IsSuccessStatusCode)
+            {
+                // La solicitud fue exitosa, puedes realizar alguna acción adicional si es necesario
+                Console.WriteLine("Taller dado de baja exitosamente");
+            }
+            else
+            {
+                // Si la solicitud no fue exitosa, puedes manejar el error aquí
+                Console.WriteLine("Hubo un problema al dar de baja el taller");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Manejo de excepciones
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
 
     public async Task EliminarTaller(int id)
     {

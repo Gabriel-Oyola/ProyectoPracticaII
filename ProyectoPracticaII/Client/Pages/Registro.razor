@@ -1,0 +1,86 @@
+﻿@page "/registro"
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+    <title>Registrarse</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #404040;
+            height: 100vh;
+            color: white;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div id="login">
+        <h3 class="text-center text-white pt-5">Motored</h3>
+        <div class="container">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div id="login-box" class="col-md-12">
+                        <form id="login-form" class="form" asp-controller="Inicio" asp-action="Registrarse" method="post">
+                            <h3 class="text-center text-info">Login</h3>
+                            <div class="form-group">
+                                <label for="username" class="text-info">Usuario</label><br>
+                                <input type="text" name="NombreUsuario" required class="form-control" placeholder="Juan27">
+                            </div>
+                            <div class="form-group">
+                                <label for="username" class="text-info">Correo</label><br>
+                                <input type="text" name="correo" required class="form-control" placeholder="juan27@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="text-info">Contraseña</label><br>
+                                <input type="password" name="clave" required class="form-control" placeholder="juan1234">
+                            </div>
+
+
+@*                             @if (ViewData["Mensaje"] != null)
+                            {
+                                <div class="alert alert-danger" role="alert">
+
+                                    @ViewData["Mensaje"]
+                                </div>
+
+                            } *@
+
+
+                            <div class="boton-2">
+                                <label for="remember-me" class="text-info"><span></span></label><br>
+                                <input type="submit" name="submit" class="btn-2" value="Registrarse">
+                            </div>
+                            <div id="register-link" class="text-right">
+                                <a href="/login" class="text-info">Iniciar sesion</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <footer>
+        <p> Motored &copy;. Todos los derechos reservados</p>
+    </footer>
+</body>
+</html>
+
+@code {
+
+}

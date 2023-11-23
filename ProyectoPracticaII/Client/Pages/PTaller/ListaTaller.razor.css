@@ -128,3 +128,27 @@ Footer {
     display: flex;
     flex-direction: column;
 }
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+}
+.modal-title {
+    text-align: center;
+}
+
+.modal-header {
+    background-color: black;
+    
+}
+
+.modal-header h5{
+    text-align: center;
+    color: red;
+}
+
+.modal-footer{
+    background-color: black;
+}

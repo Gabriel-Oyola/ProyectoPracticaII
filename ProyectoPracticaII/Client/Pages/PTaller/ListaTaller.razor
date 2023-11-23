@@ -52,7 +52,7 @@
                     <th>Email</th>
                     <th>Numero</th>
                     <th>Horarios</th>
-                    <th>Estado</th>
+        
                     <th>-</th>
                     <th>-</th>
                 </tr>
@@ -78,20 +78,40 @@
                         <td>@item.Email</td>
                         <td>@item.Numero</td>
                         <td>@item.Horarios</td>
-                        <td>@item.Estado</td>
+                      
                         <td>
                             <a class="btn btn-primary" href="/PTaller/EditarTaller/@item.IdTaller"> Editar</a>
                         </td>
 
                         <td>
-                            <button class="btn btn-warning" @onclick="()=>DarDeBajaTaller(item.IdTaller)">
-                                Dar de baja 
-
-                            </button>
+                            <button class="btn btn-warning" @onclick="()=>ConfirmarDarDeBaja(item.IdTaller)">Dar de baja</button>
                         </td>
 
 
+
                     </tr>
+
+
+                    @if (MostrarModalConfirmacion)
+                    {
+                        <div class="modal" style="display: block; color: white;  ">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5>Confirmar acción</h5>
+                                        <button type="button" class="btn-close" @onclick="()=>MostrarModalConfirmacion = false"></button>
+                                    </div>
+                                    <div class="modal-body" style="background-color: black; ">
+                                        ¿Está seguro de que desea dar de baja este taller?
+                                    </div>
+                                    <div class="modal-footer" >
+                                        <button type="button" class="btn btn-secondary" @onclick="()=>MostrarModalConfirmacion = false">Cancelar</button>
+                                        <button type="button" class="btn btn-danger" @onclick="()=>{ DarDeBajaTaller(item.IdTaller); MostrarModalConfirmacion = false; }">Confirmar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 }
             }
 
@@ -99,6 +119,7 @@
     </div>
 
 
+    
 
     <Footer>
     <p> Motored &copy;. Todos los derechos reservados</p>
@@ -117,7 +138,7 @@
         List<Taller> talleres;
         Taller NuevoTaller = new Taller();
         [Parameter] public int login { get; set; }
-
+    private int idTallerSeleccionado;
 
     protected override async Task OnInitializedAsync()
     {
@@ -135,6 +156,13 @@
             talleres = respuesta.Respuesta;
         }
     }
+
+    private void ConfirmarDarDeBaja(int idTaller)
+    {
+        idTallerSeleccionado = idTaller;
+        MostrarModalConfirmacion = true; // Muestra el modal de confirmación
+    }
+
     private async Task DarDeBajaTaller(int id)
     {
         try
@@ -157,7 +185,9 @@
             // Manejo de excepciones
             Console.WriteLine($"Error: {ex.Message}");
         }
+   
     }
+    private bool MostrarModalConfirmacion = false;
 
     public async Task EliminarTaller(int id)
     {

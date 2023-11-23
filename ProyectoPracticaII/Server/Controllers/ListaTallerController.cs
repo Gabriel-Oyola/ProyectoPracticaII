@@ -20,7 +20,7 @@ namespace ProyectoPracticaII.Server.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<List<Taller>>> GetTaller(int id)
         {
-            var lista = await motored01Context.Tallers.Where(e => e.IdUsuario == id).ToListAsync();
+            var lista = await motored01Context.Tallers.Where(e => e.IdUsuario == id && e.Estado != "Baja").ToListAsync();
             return Ok(lista);
         }
 

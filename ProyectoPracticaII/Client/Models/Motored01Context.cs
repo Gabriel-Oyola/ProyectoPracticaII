@@ -51,6 +51,10 @@ public partial class Motored01Context : DbContext
                 .HasMaxLength(8)
                 .IsUnicode(false);
 
+            entity.Property(e => e.Estado)
+               .HasMaxLength(10)
+               .IsUnicode(false);
+
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Motocicleta)
                 .HasForeignKey(d => d.IdUsuario)
                 .HasConstraintName("fk_moto");

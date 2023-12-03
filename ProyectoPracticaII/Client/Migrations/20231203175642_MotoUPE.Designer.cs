@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoPracticaII.Client.Models;
 
@@ -11,9 +12,11 @@ using ProyectoPracticaII.Client.Models;
 namespace ProyectoPracticaII.Client.Migrations
 {
     [DbContext(typeof(Motored01Context))]
-    partial class Motored01ContextModelSnapshot : ModelSnapshot
+    [Migration("20231203175642_MotoUPE")]
+    partial class MotoUPE
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

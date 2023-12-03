@@ -83,14 +83,32 @@
                         </td>
 
                         <td>
-                            <button class="btn btn-warning" @onclick="()=>EliminarMoto(item.IdMoto)">
-                                Eliminar
-
-                            </button>
+                            <button class="btn btn-warning" @onclick="()=>ConfirmarDarDeBaja(item.IdMoto)">Dar de baja</button>
                         </td>
 
 
                     </tr>
+
+                    @if (MostrarModalConfirmacion)
+                    {
+                        <div class="modal" style="display: block; color: white; ">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <h5>CONFIRMAR BAJA DE MOTO</h5>
+
+
+                                    <p>¿Está seguro de que desea dar de baja esta moto? </p>
+
+
+
+                                    <button type="button" class="btn btn-danger" @onclick="()=>{ DarDeBajaMoto(item.IdMoto); MostrarModalConfirmacion = false; RefreshPage(); }">Confirmar</button>
+                                    <button type="button" class="btn btn-secondary" @onclick="()=>MostrarModalConfirmacion = false">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
                 }
             }
 
@@ -116,7 +134,8 @@
     List<Motocicleta> motocicletas;
     Motocicleta NuevaMotocicleta = new Motocicleta();
     [Parameter] public int login { get; set; }
-
+    private int IdMotoSeleccionado;
+    [Inject] NavigationManager NavigationManager { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -135,6 +154,45 @@
         }
     }
 
+    private void ConfirmarDarDeBaja(int IdMoto)
+    {
+        IdMotoSeleccionado = IdMoto;
+        MostrarModalConfirmacion = true; // Muestra el modal de confirmación
+
+    }
+
+    private async Task DarDeBajaMoto(int id)
+    {
+        try
+        {
+            var response = await http.PutAsync($"api/ListaMoto/ActualizarEstado/{id}", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // La solicitud fue exitosa, puedes realizar alguna acción adicional si es necesario
+                Console.WriteLine("Moto dada de baja exitosamente");
+
+
+            }
+            else
+            {
+                // Si la solicitud no fue exitosa, puedes manejar el error aquí
+                Console.WriteLine("Hubo un problema al dar de baja la moto");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Manejo de excepciones
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+
+    }
+    private bool MostrarModalConfirmacion = false;
+
+    private void RefreshPage()
+    {
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+    }
 
     public async Task EliminarMoto(int id)
     {

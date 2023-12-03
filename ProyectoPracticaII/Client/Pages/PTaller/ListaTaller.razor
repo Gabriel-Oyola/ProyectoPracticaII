@@ -6,6 +6,8 @@
 @inject HttpClient http
 @inject IHttpService Ihttp
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,7 +107,7 @@
 
                                   
                                         
-                                        <button type="button" class="btn btn-danger" @onclick="()=>{ DarDeBajaTaller(item.IdTaller); MostrarModalConfirmacion = false; }">Confirmar</button>
+                                        <button type="button" class="btn btn-danger" @onclick="()=>{ DarDeBajaTaller(item.IdTaller); MostrarModalConfirmacion = false; RefreshPage(); }">Confirmar</button>
                                     <button type="button" class="btn btn-secondary" @onclick="()=>MostrarModalConfirmacion = false">Cancelar</button>
                                     </div>
                                 </div>
@@ -138,6 +140,7 @@
         List<Taller> talleres;
         Taller NuevoTaller = new Taller();
         [Parameter] public int login { get; set; }
+    [Inject] NavigationManager NavigationManager { get; set; }
     private int idTallerSeleccionado;
 
     protected override async Task OnInitializedAsync()
@@ -154,6 +157,7 @@
         if (!respuesta.Error)
         {
             talleres = respuesta.Respuesta;
+
         }
     }
 
@@ -161,6 +165,7 @@
     {
         idTallerSeleccionado = idTaller;
         MostrarModalConfirmacion = true; // Muestra el modal de confirmación
+       
     }
 
     private async Task DarDeBajaTaller(int id)
@@ -172,7 +177,9 @@
             if (response.IsSuccessStatusCode)
             {
                 // La solicitud fue exitosa, puedes realizar alguna acción adicional si es necesario
-                Console.WriteLine("Taller dado de baja exitosamente");
+                Console.WriteLine("Taller dado de baja exitosamente"); 
+               
+               
             }
             else
             {
@@ -194,5 +201,10 @@
         var resultado = await http.DeleteAsync($"api/Taller/{id}");
 
         await Leer(); 
+    }
+
+    private void RefreshPage()
+    {
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 }

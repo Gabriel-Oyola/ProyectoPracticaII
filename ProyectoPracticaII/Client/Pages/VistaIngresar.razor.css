@@ -1,0 +1,71 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+.Contenedor {
+    padding: 150px;
+    
+}
+
+.Titulo1 {
+    text-align: center;
+    font-size: 2cm;
+    color: white;
+}
+
+.Bienvenido {
+    text-align: center;
+    font-size: 1cm;
+    color: white;
+}
+
+.Ingresar {
+    text-align: center;
+    font-size: 3rem;
+    margin: auto;
+    padding: 2rem;
+    border: red solid 10px;
+    height: 150px;
+    width: 30%;
+    background-color: red;
+    color: white;
+    border-radius: 2em;
+    outline: 2px solid red;
+    outline-offset: 3px;
+    transition: all .3s ease;
+    justify-content: center;
+    display: flex;
+    text-decoration: none;
+}
+
+    .Ingresar:hover {
+        background-color: #bd0003;
+        color: white;
+        box-shadow: 0 0 5px #bd0003,0 0 20px #bd0003, 0 0 60px #bd0003, 0 0 150px #bd0003;
+    }
+
+.VideoFondo {
+    height: 720px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -2;
+}
+
+    .VideoFondo video {
+        object-fit: cover;
+        width: 100%;
+        height: 131%;
+    }
+
+.dark-overlay {
+    height: 940px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -2;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: -1;
+}

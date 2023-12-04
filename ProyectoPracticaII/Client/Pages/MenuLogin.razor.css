@@ -3,7 +3,7 @@
 }
 
 .Contenedor {
-    padding: 150px;
+    padding: 140px;
     
 }
 
@@ -19,13 +19,13 @@
     color: white;
 }
 
-.Ingresar {
+.Astyle {
     text-align: center;
-    font-size: 3rem;
+    font-size: 1rem;
     margin: auto;
-    padding: 2rem;
+    padding: 0rem;
     border: red solid 10px;
-    height: 150px;
+    height: 50px;
     width: 30%;
     background-color: red;
     color: white;
@@ -38,11 +38,13 @@
     text-decoration: none;
 }
 
-    .Ingresar:hover {
+    .Astyle:hover {
         background-color: #bd0003;
         color: white;
         box-shadow: 0 0 5px #bd0003,0 0 20px #bd0003, 0 0 60px #bd0003, 0 0 150px #bd0003;
     }
+
+
 
 .VideoFondo {
     height: 720px;
@@ -56,11 +58,11 @@
     .VideoFondo video {
         object-fit: cover;
         width: 100%;
-        height: 131%;
+        height: 100%;
     }
 
 .dark-overlay {
-    height: 940px;
+    height: 720px;
     position: absolute;
     top: 0;
     left: 0;
@@ -68,4 +70,17 @@
     z-index: -2;
     background-color: rgba(0, 0, 0, 0.8);
     z-index: -1;
+}
+
+Footer {
+    color: #bd0003;
+    background-color: black;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 2rem 8%;
+    display: flex;
+    flex-direction: column;
 }

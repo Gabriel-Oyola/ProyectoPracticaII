@@ -1,4 +1,12 @@
 ﻿@page "/Inicio"
+@using Microsoft.AspNetCore.Authorization; 
+@using Microsoft.AspNetCore.Components.Authorization; 
+@using ProyectoPracticaII.Client.extensiones;
+@inject AuthenticationStateProvider autenticacionProvider; 
+@attribute [Authorize(Roles = "UsuarioRegistrado")]
+@inject NavigationManager NavManager
+
+ 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +20,7 @@
     <style>
         * {
             padding: 0;
-            margin: 0;
+            margin: 0; 
         }
 
 
@@ -163,13 +171,19 @@
 
 </head>
 <body>
+
+    <AuthorizeView>
+        <Authorized>
+            <h1> Bienvenido @context.User.Identity!.Name</h1>
+        </Authorized>
+    </AuthorizeView>
     <header>
         <section id="Menu">
             <ul>
                 <a href="#">Mi Perfil</a>
                 <a href="/PMotocicletas/ListaMotocicletas/">Mis Motos</a>
                 <a href="/PTaller/ListaTaller/">Mi Taller</a>
-                <a href="#">Salir</a>
+                <a @onclick="CerrarSesion" href="javascript:void(0)">Salir</a>
             </ul>
 
         </section>
@@ -234,4 +248,13 @@
 </html>
 
 @code {
+
+    private async Task CerrarSesion()
+    {
+        var autenticacionExt = (AutenticacionExtension) autenticacionProvider; 
+        await autenticacionExt.ActualizarEstadoAutenticacion(null);
+        NavManager.NavigateTo("/", true); 
+
+    }
+
     }

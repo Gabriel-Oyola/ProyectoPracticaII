@@ -23,7 +23,7 @@ namespace ProyectoPracticaII.Server.Controllers
         
         public async Task<ActionResult<Usuario>> Registrarse(Usuario modelo)
         {
-            //modelo.Clave = CalcularHash(modelo.Clave);
+            modelo.Clave = CalcularHash(modelo.Clave);
 
 
             _context.Usuarios.Add(modelo);

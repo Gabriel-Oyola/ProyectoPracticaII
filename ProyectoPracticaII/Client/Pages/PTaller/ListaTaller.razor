@@ -6,6 +6,10 @@
 @inject HttpClient http
 @inject IHttpService Ihttp
 
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@attribute [Authorize(Roles = "UsuarioRegistrado")]
+
 
 
 <!DOCTYPE html>

@@ -1,0 +1,59 @@
+﻿@page "/verOpinion/{taller:int}"
+@using ProyectoPracticaII.Client.Models;
+@inject IHttpService http
+@inject NavigationManager NavigatorManager
+
+<h3>VerOpinion</h3>
+
+@if (opiniones == null)
+{
+    <tr>Cargando...</tr>
+}
+else if (opiniones.Count == 0)
+{
+    <tr>No existen opiniones del taller</tr>
+}
+else
+{
+    @foreach (var item in opiniones)
+    {
+        <tr>
+
+            <td>@item.Fecha</td>
+            <td>@item.Comentario</td>
+            <td>@item.Rating</td>
+           
+           
+
+
+
+        </tr>
+    }
+}
+
+
+@code {
+    [Parameter] public int taller { get; set; }
+    [Parameter] public int login { get; set; }
+    List<Opinione> opiniones;
+    
+   
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        await Leer();
+    }
+
+
+    private async Task Leer()
+    {
+
+        var respuesta = await http.Get<List<Opinione>>($"api/ListaOpinion/{taller}");
+        if (!respuesta.Error)
+        {
+            opiniones = respuesta.Respuesta;
+        }
+    }
+}

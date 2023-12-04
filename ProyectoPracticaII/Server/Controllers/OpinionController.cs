@@ -23,12 +23,23 @@ namespace ProyectoPracticaII.Server.Controllers
             return resp;
         }
 
-      
+
 
         private async Task<List<Opinione>> GetDbOpiniones()
         {
             return await motored01Context.Opiniones.ToListAsync();
         }
+
+        [HttpPost]
+
+        public async Task<ActionResult<Opinione>> CreateOpinion(Opinione objeto)
+        {
+
+            motored01Context.Opiniones.Add(objeto);
+            await motored01Context.SaveChangesAsync();
+            return Ok(await GetDbOpiniones());
+        }
+
     }
 
 

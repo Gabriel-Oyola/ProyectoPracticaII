@@ -1,0 +1,47 @@
+﻿@page "/ReporteOpinion/{login:int}/{opinion:int}"
+@using ProyectoPracticaII.Client.Models;
+@inject IHttpService http
+@inject NavigationManager NavigatorManager
+
+
+<h3>reporteOpinion</h3>
+
+<EditForm Model="NuevoReporteOpinion">
+    <label>idUsuarioRC</label>
+    <label>idTaller</label>
+    <label>idOpinion</label>
+    <label>idReporte</label>
+    <label>Comentario</label>
+    <label>Fecha</label>
+    <label>Rating</label>
+    <label>Motivo</label>
+    
+
+</EditForm>
+
+
+
+
+
+@code {
+    ReportesOpinione NuevoReporteOpinion = new ReportesOpinione();
+    [Parameter] public int login { get; set; }
+    [Parameter] public int taller { get; set; }
+
+
+
+
+
+    public async Task CrearReporteOpinion(ReportesOpinione ReportesOpinione)
+    {
+        var resultado = await http.Post<ReportesOpinione>("api/Opinion", NuevoReporteOpinion);
+        if (resultado.Error)
+        {
+            var body = resultado.HttpResponseMessage;
+
+        }
+        // NavigatorManager.NavigateTo($"/PTaller/ListaTaller/{nuevaOpinion.IdUsuario}");
+    }
+
+
+}

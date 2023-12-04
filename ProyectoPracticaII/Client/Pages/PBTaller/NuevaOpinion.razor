@@ -1,0 +1,52 @@
+﻿@using ProyectoPracticaII.Client.Models;
+@inject IHttpService http
+@inject NavigationManager NavigatorManager
+@page "/opinion/{taller:int}"
+
+<EditForm Model="nuevaOpinion">
+    <label>idusuario</label>
+    <InputNumber @bind-Value=nuevaOpinion.IdUsuario></InputNumber>
+
+    <label>idtaller</label>
+    <InputNumber @bind-Value=nuevaOpinion.IdTaller></InputNumber>
+
+    <label>Comentario</label>
+    <InputText @bind-Value=nuevaOpinion.Comentario></InputText>
+
+    <label>Fecha</label>
+    <InputText @bind-Value=nuevaOpinion.Fecha></InputText>
+
+    <label>Rating</label>
+    <InputNumber @bind-Value=nuevaOpinion.Rating></InputNumber>
+
+
+    <button @onclick="(()=>CrearOpinion(nuevaOpinion))">Nueva Opinion</button>
+
+</EditForm>
+
+
+
+@code {
+    Opinione nuevaOpinion = new Opinione();
+    [Parameter] public int login { get; set; }
+    [Parameter] public int taller { get; set; }
+
+
+
+
+
+    public async Task CrearOpinion(Opinione opinione)
+    {
+        var resultado = await http.Post<Opinione>("api/Opinion", nuevaOpinion);
+        if (resultado.Error)
+        {
+            var body = resultado.HttpResponseMessage;
+
+        }
+        // NavigatorManager.NavigateTo($"/PTaller/ListaTaller/{nuevaOpinion.IdUsuario}");
+    }
+
+
+
+  
+}

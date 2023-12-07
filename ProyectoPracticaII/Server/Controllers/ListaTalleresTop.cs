@@ -7,24 +7,25 @@ namespace ProyectoPracticaII.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ListaOpinionController : ControllerBase
+    public class ListaTalleresTop : ControllerBase
     {
         private readonly Motored01Context motored01Context;
 
-        public ListaOpinionController(Motored01Context motored01Context)
+        public ListaTalleresTop(Motored01Context motored01Context)
         {
             this.motored01Context = motored01Context;
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<List<Opinione>>> GetOpinion(int id)
+        public async Task<ActionResult<List<TallerTop>>> GetOpinion(int id)
         {
-            var lista = await motored01Context.Opiniones.Where(e => e.IdTaller == id).ToListAsync();
+            var lista = await motored01Context.Opiniones.Where(e => e.IdTaller == id).OrderByDescending(e => e.Rating).AverageAsync(e => e.Rating); 
             return Ok(lista);
         }
 
-       
+      
 
-        
     }
 }
+
+

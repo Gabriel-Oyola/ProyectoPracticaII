@@ -27,9 +27,9 @@ namespace ProyectoPracticaII.Server.Controllers
 
 
 
-            private async Task<List<Opinione>> GetDbOpiniones()
+            private async Task<List<ReportesOpinione>> GetReportesOpiniones()
             {
-                return await motored01Context.Opiniones.ToListAsync();
+                return await motored01Context.ReportesOpiniones.ToListAsync();
             }
 
             [HttpPost]
@@ -39,7 +39,7 @@ namespace ProyectoPracticaII.Server.Controllers
 
                 motored01Context.ReportesOpiniones.Add(objeto);
                 await motored01Context.SaveChangesAsync();
-                return Ok(await GetDbOpiniones());
+                return Ok(await GetReportesOpiniones());
             }
 
         }

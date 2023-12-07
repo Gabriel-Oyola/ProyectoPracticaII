@@ -1,31 +1,111 @@
-﻿@page "/ReporteOpinion/{login:int}/{opinion:int}"
+﻿@page "/ReporteOpinion/{login:int}/{taller:int}/{opinion:int}"
 @using ProyectoPracticaII.Client.Models;
 @inject IHttpService http
 @inject NavigationManager NavigatorManager
 
 
-<h3>reporteOpinion</h3>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        html{
+            height: 100%;
+        }
+        html, body{
+
+            background-color: gray;
+            flex-direction:column; 
+            min-height:100%; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <section id="Menu">
+            <ul>
+                <a href="/Inicio">Inicio</a>
+                <a href="#">Mi Perfil</a>
+                <a href="PMotocicletas/ListaMotocicletas/"> Mis Motos</a>
+                <a href="#">Mi Taller</a>
+           
+            </ul>
+
+        </section>
+    </header>
+
+
+ <section class="form-opinionReporte">
 
 <EditForm Model="NuevoReporteOpinion">
+
+    <h4>Reportar una opinion</h4>
+
     <label>idUsuarioRC</label>
+
+    <InputNumber @bind-Value=NuevoReporteOpinion.IdUsuarioRc style="width: 100%;
+    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
+
     <label>idTaller</label>
+
+    <InputNumber @bind-Value=NuevoReporteOpinion.IdTaller style="width: 100%;
+    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
+
     <label>idOpinion</label>
+
+    <InputNumber @bind-Value=NuevoReporteOpinion.IdOpinion style="width: 100%;
+    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
+
     <label>idReporte</label>
+
+    <InputNumber @bind-Value=NuevoReporteOpinion.IdReporte style="width: 100%;
+    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
+
     <label>Comentario</label>
+
+    <InputText @bind-Value=NuevoReporteOpinion.Comentario style="width: 100%;
+    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputText>
+
     <label>Fecha</label>
+
+    <InputText @bind-Value=NuevoReporteOpinion.Fecha style="width: 100%;
+    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputText>
+
     <label>Rating</label>
+
+    <InputNumber @bind-Value=NuevoReporteOpinion.Rating style="width: 100%;
+    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
+
     <label>Motivo</label>
-    
+
+    <InputText @bind-Value=NuevoReporteOpinion.Motivo style="width: 100%;
+    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputText>
+
+            <button class="btnC" @onclick="(()=>CrearReporteOpinion(NuevoReporteOpinion))">Nueva Opinion</button>
 
 </EditForm>
 
+</section>
 
+ <br/>
+    <br/>
+    </body>
+        
+    <Footer>
+    <p> Motored &copy;. Todos los derechos reservados</p>
+    </Footer>
 
-
+</html>
 
 @code {
     ReportesOpinione NuevoReporteOpinion = new ReportesOpinione();
     [Parameter] public int login { get; set; }
+    [Parameter] public int opinion { get; set; }
     [Parameter] public int taller { get; set; }
 
 
@@ -34,7 +114,7 @@
 
     public async Task CrearReporteOpinion(ReportesOpinione ReportesOpinione)
     {
-        var resultado = await http.Post<ReportesOpinione>("api/Opinion", NuevoReporteOpinion);
+        var resultado = await http.Post<ReportesOpinione>("api/ReporteOpiniones", NuevoReporteOpinion);
         if (resultado.Error)
         {
             var body = resultado.HttpResponseMessage;

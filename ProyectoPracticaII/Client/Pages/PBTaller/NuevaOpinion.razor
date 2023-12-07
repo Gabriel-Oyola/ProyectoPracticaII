@@ -3,26 +3,90 @@
 @inject NavigationManager NavigatorManager
 @page "/opinion/{taller:int}"
 
-<EditForm Model="nuevaOpinion">
-    <label>idusuario</label>
-    <InputNumber @bind-Value=nuevaOpinion.IdUsuario></InputNumber>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 
-    <label>idtaller</label>
-    <InputNumber @bind-Value=nuevaOpinion.IdTaller></InputNumber>
+    <style>
+        html{
+            height: 100%;
+        }
+        html, body{
 
-    <label>Comentario</label>
-    <InputText @bind-Value=nuevaOpinion.Comentario></InputText>
+            background-color: gray;
+            flex-direction:column; 
+            min-height:100%; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <section id="Menu">
+            <ul>
+                <a href="/Inicio">Inicio</a>
+                <a href="#">Mi Perfil</a>
+                <a href="PMotocicletas/ListaMotocicletas/"> Mis Motos</a>
+                <a href="#">Mi Taller</a>
+           
+            </ul>
 
-    <label>Fecha</label>
-    <InputText @bind-Value=nuevaOpinion.Fecha></InputText>
+        </section>
+    </header>
 
-    <label>Rating</label>
-    <InputNumber @bind-Value=nuevaOpinion.Rating></InputNumber>
+    <br />
+    <section class="form-opinion">
+
+        <EditForm Model="nuevaOpinion">
+
+            <h4>Publicar nueva opinion</h4>
 
 
-    <button @onclick="(()=>CrearOpinion(nuevaOpinion))">Nueva Opinion</button>
+            <label>idusuario</label>
+            <InputNumber @bind-Value=nuevaOpinion.IdUsuario style="width: 100%;
+    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
 
-</EditForm>
+            <label>idtaller</label>
+            <InputNumber @bind-Value=nuevaOpinion.IdTaller style="width: 100%;
+    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
+
+            <label>Comentario</label>
+            <InputText @bind-Value=nuevaOpinion.Comentario style="width: 100%;
+    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputText>
+
+            <label>Fecha</label>
+            <InputText @bind-Value=nuevaOpinion.Fecha style="width: 100%;
+    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputText>
+
+            <label>Rating</label>
+            <InputNumber @bind-Value=nuevaOpinion.Rating style="width: 100%;
+    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
+
+
+            <button class="btnC" @onclick="(()=>CrearOpinion(nuevaOpinion))">Nueva Opinion</button>
+
+        </EditForm>
+    </section>
+    <br/>
+    <br/>
+    </body>
+        
+    <Footer>
+    <p> Motored &copy;. Todos los derechos reservados</p>
+    </Footer>
+
+  
+
+
+</html>
+
+
+
+
+
+
 
 
 
@@ -31,8 +95,7 @@
     [Parameter] public int login { get; set; }
     [Parameter] public int taller { get; set; }
 
-
-
+  
 
 
     public async Task CrearOpinion(Opinione opinione)
@@ -47,6 +110,6 @@
     }
 
 
-
+   
   
 }

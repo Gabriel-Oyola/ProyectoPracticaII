@@ -19,6 +19,7 @@ public partial class Motocicleta
 
     public string? Aseguradora { get; set; }
 
-    public string? Estado { get; set; } 
+    public string? Estado { get; set; }
+
     public virtual Usuario? IdUsuarioNavigation { get; set; }
 }

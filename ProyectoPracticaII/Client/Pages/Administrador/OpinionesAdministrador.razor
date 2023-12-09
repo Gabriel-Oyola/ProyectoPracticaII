@@ -1,0 +1,33 @@
+﻿@page "/ReportesOpiniones"
+@using ProyectoPracticaII.Client.Models;
+@inject IHttpService http
+@inject NavigationManager NavigatorManager
+
+
+<h3>OpinionesAdministrador</h3>
+
+@code {
+    [Parameter] public int taller { get; set; }
+    [Parameter] public int login { get; set; }
+    List<ReportesOpinione> ReportarOpinion;
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        await Leer();
+    }
+
+
+    private async Task Leer()
+    {
+
+        var respuesta = await http.Get<List<ReportesOpinione>>($"api/ListaReporteOpinion/");
+        if (!respuesta.Error)
+        {
+            ReportarOpinion = respuesta.Respuesta;
+        }
+    }
+}

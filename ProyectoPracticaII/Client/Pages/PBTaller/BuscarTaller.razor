@@ -74,15 +74,14 @@
 
             @if (tallerEncontrado != null)
             {
+                
 
 
-
-
-                <tr>
+                    <tr>
 
                     <td>@tallerEncontrado.NombreTaller</td>
                     <td>@tallerEncontrado.Direccion</td>
-
+                    
                     @*       <td>
                             <a class="btn btn-primary" href="/PMotocicletas/EditarMoto/@item.IdMoto"> Editar</a>
                         </td>
@@ -94,15 +93,19 @@
                             </button>
                         </td>*@
 
+                    <td><a href="//opinion/@tallerEncontrado.IdTaller">Dar Opinion</a></td>
+                    <td><a href="/veropinion">Ver reseñas de otros usuarios</a></td>
+                
 
+                
                 </tr>
-
-
+                
             }
             else if (NoEncontrado != null)
             {
                 <tr> No existe taller</tr>
             }
+            
           
           
 

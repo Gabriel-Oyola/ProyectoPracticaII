@@ -10,7 +10,7 @@
 @inject AuthenticationStateProvider autenticacionProvider; 
 
 
-
+@inject IJSRuntime JSRuntime 
 
 
 
@@ -60,7 +60,7 @@
 
 
 
-            <button class="btnC" @onclick="IniciarSesion">Entrar</button>
+            <button class="btnC" @onclick="()=>{IniciarSesion();save(login.Correo);}">Entrar</button>
 
 
 
@@ -88,7 +88,21 @@
 @code {
     Usuario NuevoUsuario = new Usuario();
 
+    ULT email = new ULT(); 
+
     private LoginDTO login = new LoginDTO(); 
+
+    string userPreferences; 
+    string storedUserPreferences; 
+
+
+
+    public async Task save(string correo)
+    {
+        userPreferences = correo; 
+        await JSRuntime.InvokeVoidAsync("sessionStorage.setItem", "correo", userPreferences);
+    }
+
 
 
     private async Task IniciarSesion()
@@ -102,6 +116,11 @@
 
             NavigatorManager.NavigateTo("/Inicio"); 
         }
+    }
+
+    private async Task guardarCorreoLOGUEADO(string correo)
+    {
+        email.GuardarDato(correo);
     }
 
 

@@ -1,10 +1,18 @@
 ﻿
 
-@page "/PMotocicletas/ListaMotocicletas/{login:int}"
+@page "/PMotocicletas/ListaMotocicletas"
 
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
 @using ProyectoPracticaII.Client.Models;
 @inject HttpClient http
 @inject IHttpService Ihttp
+@inject AuthenticationStateProvider autenticacionProvider;
+@attribute [Authorize(Roles = "UsuarioRegistrado")]
+@inject NavigationManager NavManager 
+@using ProyectoPracticaII.Shared; 
+@using ProyectoPracticaII.Client.extensiones; 
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,6 +48,7 @@
     <br />
     <div class="btnCentrado">
         <a class="btnCrear" href="/PMotocicletas/CrearMoto"> REGISTRAR UNA NUEVA MOTO</a>
+        
     </div>
    
     <div id="main-container">
@@ -61,7 +70,9 @@
 
             @if (motocicletas == null)
             {
-                <tr>Cargando...</tr>
+
+                <th>Cargando...</th>
+                
             }
             else if (motocicletas.Count == 0)
             {
@@ -131,23 +142,69 @@
 
 
 @code {
-    List<Motocicleta> motocicletas;
+    List<Models.Motocicleta> motocicletas;
     Motocicleta NuevaMotocicleta = new Motocicleta();
-    [Parameter] public int login { get; set; }
+    string IdUsuario; 
     private int IdMotoSeleccionado;
     [Inject] NavigationManager NavigationManager { get; set; }
+    @inject IJSRuntime JSRuntime
 
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitializedAsync();
-        await Leer();
+        base.OnInitialized();
+
+            Read();
+        
+
+       
+
+       
+
     }
 
+    string userPreferences;
+    string storedUserPreferences;
 
-    private async Task Leer()
+    private async Task Read()
     {
 
-        var respuesta = await Ihttp.Get<List<Motocicleta>>($"api/ListaMoto/{login}");
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        ObtenerIdUsuario();
+
+        Leer(int.Parse(IdUsuario));
+
+    }
+
+    async Task ObtenerIdUsuario()
+    {
+        try
+        {
+          
+            var apiUrl = $"api/RastrearId?correo={storedUserPreferences}";
+
+            var response = await http.GetAsync(apiUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                IdUsuario = await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                IdUsuario = "Error al obtener el ID del usuario";
+            }
+        }
+        catch (Exception ex)
+        {
+            IdUsuario = $"Error: {ex.Message}";
+        }
+    }
+    private async Task Leer(int ID)
+    {
+
+        var respuesta = await Ihttp.Get<List<Motocicleta>>($"api/ListaMoto/{ID}");
+      
         if (!respuesta.Error)
         {
             motocicletas = respuesta.Respuesta;
@@ -157,7 +214,7 @@
     private void ConfirmarDarDeBaja(int IdMoto)
     {
         IdMotoSeleccionado = IdMoto;
-        MostrarModalConfirmacion = true; // Muestra el modal de confirmación
+        MostrarModalConfirmacion = true; 
 
     }
 
@@ -198,6 +255,6 @@
     {
         var resultado = await http.DeleteAsync($"api/Motocicleta/{id}");
 
-        await Leer(); 
+        await Leer(id); 
     }
 }

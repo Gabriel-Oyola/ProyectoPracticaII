@@ -1,5 +1,9 @@
 ﻿@page "/PTienda/BTiendas"
-
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@inject AuthenticationStateProvider autenticacionProvider;
+@attribute [Authorize(Roles = "UsuarioRegistrado")]
+@inject NavigationManager NavManager
 
 
 <!DOCTYPE html>

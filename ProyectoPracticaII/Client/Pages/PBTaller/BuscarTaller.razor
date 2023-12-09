@@ -1,8 +1,13 @@
 ﻿@page "/PBTaller/BuscarTaller"
 
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
 @using ProyectoPracticaII.Client.Models;
 @inject HttpClient http
 @inject IHttpService Ihttp
+@inject AuthenticationStateProvider autenticacionProvider;
+@attribute [Authorize(Roles = "UsuarioRegistrado")]
+@inject NavigationManager NavManager
 
 <!DOCTYPE html>
 <html lang="en">

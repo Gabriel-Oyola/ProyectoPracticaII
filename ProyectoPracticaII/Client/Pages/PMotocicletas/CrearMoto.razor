@@ -1,7 +1,12 @@
 ﻿@page "/PMotocicletas/CrearMoto"
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
 @using ProyectoPracticaII.Client.Models;
 @inject IHttpService http
 @inject NavigationManager NavigatorManager 
+@inject AuthenticationStateProvider autenticacionProvider;
+@attribute [Authorize(Roles = "UsuarioRegistrado")]
+@inject NavigationManager NavManager
 
 
 <!DOCTYPE html>
@@ -96,7 +101,7 @@
             var body = resultado.HttpResponseMessage;
 
         }
-        NavigatorManager.NavigateTo($"/PMotocicletas/ListaMotocicletas/{NuevaMotocicleta.IdUsuario}");
+        NavigatorManager.NavigateTo($"/PMotocicletas/ListaMotocicletas/");
     }
 
   

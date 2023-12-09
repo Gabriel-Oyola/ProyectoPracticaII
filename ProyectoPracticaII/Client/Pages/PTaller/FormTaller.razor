@@ -1,7 +1,12 @@
-﻿@using ProyectoPracticaII.Client.Models;
+﻿@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@using ProyectoPracticaII.Client.Models;
 @inject HttpClient http
 @inject IHttpService Ihttp
 @inject NavigationManager NavigatorManager
+@inject AuthenticationStateProvider autenticacionProvider;
+@attribute [Authorize(Roles = "UsuarioRegistrado")]
+@inject NavigationManager NavManager
 
 
 <!DOCTYPE html>

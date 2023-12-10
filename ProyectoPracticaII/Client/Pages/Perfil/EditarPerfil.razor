@@ -1,0 +1,44 @@
+﻿@using ProyectoPracticaII.Client.Models;
+@inject IHttpService http
+@inject NavigationManager NavigatorManager
+@page "/EditarPerfil/{login:int}"
+
+
+
+<FormUsuarios usuarios="usuarios" onCancel="Cancelar"/>
+
+
+
+
+
+
+
+
+@code {
+    Usuario usuarios = new Usuario();
+    [Parameter] public int login { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Mostrar();
+    }
+
+
+    private async Task Mostrar()
+    {
+        var respuesta = await http.Get<Usuario>($"api/MostrarPerfil/{login}");
+        if (respuesta.Error)
+        {
+            var body = respuesta.Respuesta;
+        }
+        else
+        {
+            usuarios = respuesta.Respuesta;
+        }
+    }
+
+    private void Cancelar()
+    {
+        NavigatorManager.NavigateTo($"//MiPerfil/{usuarios.IdUsuario}");
+    }
+}

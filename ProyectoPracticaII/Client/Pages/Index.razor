@@ -5,6 +5,8 @@
 @inject AuthenticationStateProvider autenticacionProvider; 
 @attribute [Authorize]
 @inject NavigationManager NavManager
+@inject HttpClient http
+@inject IHttpService Ihttp
 
  
 
@@ -181,8 +183,8 @@
         <section id="Menu">
             <ul>
                 <a href="#">Mi Perfil</a>
-                <a href="/PMotocicletas/ListaMotocicletas/">Mis Motos</a>
-                <a href="/PTaller/ListaTaller/">Mi Taller</a>
+                <a @onclick="Read">Mis Motos</a>
+                <a @onclick="ReadTaller">Mi Taller</a>
                 <a @onclick="CerrarSesion" href="javascript:void(0)">Salir</a>
             </ul>
 
@@ -247,6 +249,61 @@
 </html>
 
 @code {
+    string IdUsuario;
+    string userPreferences;
+    string storedUserPreferences;
+    @inject IJSRuntime JSRuntime
+
+    private async Task Read()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/PMotocicletas/ListaMotocicletas/{IdUsuario}");
+
+       
+
+    }
+    private async Task ReadTaller()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/PTaller/ListaTaller/{IdUsuario}");
+
+
+
+    }
+    async Task ObtenerIdUsuario()
+    {
+        try
+        {
+
+            var apiUrl = $"api/RastrearId?correo={storedUserPreferences}";
+
+            var response = await http.GetAsync(apiUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                IdUsuario = await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                IdUsuario = "Error al obtener el ID del usuario";
+            }
+        }
+        catch (Exception ex)
+        {
+            IdUsuario = $"Error: {ex.Message}";
+        }
+    }
 
     private async Task CerrarSesion()
     {

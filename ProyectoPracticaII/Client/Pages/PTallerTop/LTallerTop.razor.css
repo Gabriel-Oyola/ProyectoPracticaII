@@ -616,7 +616,7 @@
     thead {
         background-color: #bd0003;
         border-bottom: solid 5px black;
-        color: white;
+        color: black;
     }
 
     tr:nth-child(even) {

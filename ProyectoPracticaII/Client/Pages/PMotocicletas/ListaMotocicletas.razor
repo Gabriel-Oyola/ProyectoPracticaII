@@ -1,6 +1,6 @@
 ﻿
 
-@page "/PMotocicletas/ListaMotocicletas"
+@page "/PMotocicletas/ListaMotocicletas/{login:int}"
 
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components.Authorization;
@@ -48,8 +48,7 @@
     <br />
     <div class="btnCentrado">
         <a class="btnCrear" href="/PMotocicletas/CrearMoto"> REGISTRAR UNA NUEVA MOTO</a>
-        <br/> 
-        <button class="btnCrear" @onclick="Read"> Cargar lista</button>
+      
     </div>
    
     <div id="main-container">
@@ -147,6 +146,7 @@
 
 @code {
     List<Models.Motocicleta> motocicletas;
+    [Parameter] public int login { get; set; }
     Motocicleta NuevaMotocicleta = new Motocicleta();
     string IdUsuario; 
     private int IdMotoSeleccionado;
@@ -157,8 +157,8 @@
     {
         base.OnInitialized();
 
-        
-        
+
+        await Leer();
 
        
 
@@ -178,7 +178,7 @@
 
         ObtenerIdUsuario();
 
-        Leer(int.Parse(IdUsuario));
+        //Leer(int.Parse(IdUsuario));
 
     }
 
@@ -204,10 +204,10 @@
             IdUsuario = $"Error: {ex.Message}";
         }
     }
-    private async Task Leer(int ID)
+    private async Task Leer()
     {
 
-        var respuesta = await Ihttp.Get<List<Motocicleta>>($"api/ListaMoto/{ID}");
+        var respuesta = await Ihttp.Get<List<Motocicleta>>($"api/ListaMoto/{login}");
       
         if (!respuesta.Error)
         {
@@ -259,7 +259,7 @@
     {
         var resultado = await http.DeleteAsync($"api/Motocicleta/{id}");
 
-        await Leer(id); 
+        //await Leer(id); 
     }
 
     

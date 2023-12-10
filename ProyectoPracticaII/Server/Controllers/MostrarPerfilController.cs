@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProyectoPracticaII.Client.Models;
+using ProyectoPracticaII.Shared;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -30,6 +31,10 @@ namespace ProyectoPracticaII.Server.Controllers
             return Ok(User);
         }
 
+       
+        
+        
+
         [HttpPut("{id:int}")]
         public async Task<ActionResult<List<Usuario>>> UpdateUsuario(Usuario objeto)
         {
@@ -57,6 +62,51 @@ namespace ProyectoPracticaII.Server.Controllers
             }
             return sb.ToString();
         }
+
+
+        [HttpPost]
+        [Route("Login")]
+
+        public async Task<ActionResult> Login([FromBody] LoginDTO login)
+        {
+            SesionDTO sesionDTO = new SesionDTO();
+            ULT email = new ULT();
+
+            Usuario usuario_encontrado = await GetUsuario(login.Correo, CalcularHash(login.Clave));
+
+            if (usuario_encontrado != null)
+            {
+                sesionDTO.Nombre = usuario_encontrado.NombreUsuario;
+                sesionDTO.Correo = login.Correo;
+                sesionDTO.Rol = "UsuarioRegistrado";
+                email.GuardarDato(login.Correo);
+            }
+          
+
+            return StatusCode(StatusCodes.Status200OK, sesionDTO);
+
+        }
+
+       
+        public async Task<Usuario> GetUsuario(string correo, string clave)
+        {
+            bool Status;
+            Usuario usuario_encontrado = await motored01Context.Usuarios.Where(u => u.Correo == correo && u.Clave == clave).FirstOrDefaultAsync();
+
+            if (usuario_encontrado != null)
+            {
+                Status = true;
+            }
+            else
+            {
+                Status = false;
+            }
+            return usuario_encontrado;
+
+
+        }
+
+
         private string CalcularHash(string input)
         {
             using (SHA256 sha256Hash = SHA256.Create())
@@ -71,5 +121,7 @@ namespace ProyectoPracticaII.Server.Controllers
                 return builder.ToString();
             }
         }
+
+
     }
 }

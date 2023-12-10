@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoPracticaII.Client.Models;
 
@@ -11,9 +12,11 @@ using ProyectoPracticaII.Client.Models;
 namespace ProyectoPracticaII.Client.Migrations
 {
     [DbContext(typeof(Motored01Context))]
-    partial class Motored01ContextModelSnapshot : ModelSnapshot
+    [Migration("20231210140428_fkTallerTop")]
+    partial class fkTallerTop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,12 +228,6 @@ namespace ProyectoPracticaII.Client.Migrations
 
             modelBuilder.Entity("ProyectoPracticaII.Client.Models.TallerTop", b =>
                 {
-                    b.Property<int>("IdTop")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTop"));
-
                     b.Property<int>("IdTaller")
                         .HasColumnType("int");
 
@@ -243,9 +240,6 @@ namespace ProyectoPracticaII.Client.Migrations
                     b.Property<double>("PromedioRating")
                         .HasColumnType("float")
                         .HasColumnName("PromedioRating");
-
-                    b.HasKey("IdTop")
-                        .HasName("PK__TallerTo__2BC545E13E345D15");
 
                     b.HasIndex("IdTaller");
 

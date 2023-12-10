@@ -1,0 +1,100 @@
+﻿@page "/PTallerTop/LTallerTop"
+
+@using ProyectoPracticaII.Client.Models;
+@inject HttpClient http
+@inject IHttpService Ihttp
+
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@attribute [Authorize(Roles = "UsuarioRegistrado")]
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <header>
+        <section id="Menu">
+            <ul>
+                <a href="/Inicio">Inicio</a>
+                <a href="#">Mi Perfil</a>
+                <a href="PMotocicletas/ListaMotocicletas/">Mis Motos</a>
+                <a href="#">Salir</a>
+            </ul>
+
+        </section>
+    </header>
+
+    <br />
+
+
+
+
+    <br />
+    <!-- Your Blazor component -->
+    @if (tallerTops != null && tallerTops.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+              
+                    <th>Nombre Taller</th>
+                    <th>Rating</th>
+                    <th>-</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tallerTop in tallerTops)
+                {
+                    <tr>
+                       
+                        <td>@tallerTop.NombreTaller</td>
+                        <td>@tallerTop.PromedioRating</td>
+                        <td>
+                            <StarRating Rating="@Convert.ToInt32(tallerTop.PromedioRating)" />
+                        </td>
+                    </tr>
+             
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No hay datos disponibles.</p>
+    }
+
+
+   
+
+    
+    <Footer>
+    <p> Motored &copy;. Todos los derechos reservados</p>
+    </Footer>
+</body>
+
+
+
+
+</html>
+
+
+
+
+@code {
+    List<TallerTop> tallerTops;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Llama al controlador para obtener los datos
+        tallerTops = await http.GetFromJsonAsync<List<TallerTop>>("api/ListaTop");
+    }
+ 
+   
+}

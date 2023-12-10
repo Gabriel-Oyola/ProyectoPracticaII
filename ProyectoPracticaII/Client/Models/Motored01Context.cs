@@ -29,7 +29,7 @@ public partial class Motored01Context : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data source=DESKTOP-98UKOSL\\SQLEXPRESS01; Initial Catalog=Motored01; Trusted_Connection=SSPI;MultipleActiveResultSets=true;Trust Server Certificate=true;");
+        => optionsBuilder.UseSqlServer("Data source=DESKTOP-DFG8PLB\\SQLEXPRESS05; Initial Catalog=Motored01; Trusted_Connection=SSPI;MultipleActiveResultSets=true;Trust Server Certificate=true;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -154,13 +154,12 @@ public partial class Motored01Context : DbContext
                 .HasNoKey()
                 .ToTable("TallerTop");
 
-            entity.Property(e => e.LinkTaller)
-                .HasMaxLength(500)
-                .IsUnicode(false);
-            entity.Property(e => e.Nombre)
+            entity.HasKey(e => e.IdTop).HasName("PK__TallerTo__2BC545E13E345D15");
+
+            entity.Property(e => e.NombreTaller)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-            entity.Property(e => e.Rating).HasColumnName("rating");
+            entity.Property(e => e.PromedioRating).HasColumnName("PromedioRating");
 
             entity.HasOne(d => d.IdTallerNavigation).WithMany()
                 .HasForeignKey(d => d.IdTaller)

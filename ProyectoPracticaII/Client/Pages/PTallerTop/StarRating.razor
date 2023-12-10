@@ -1,0 +1,13 @@
+﻿
+@code {
+    [Parameter]
+    public int Rating { get; set; }
+}
+
+@if (Rating > 0)
+{
+    for (int i = 0; i < Rating; i++)
+    {
+        <span>★</span>
+    }
+}

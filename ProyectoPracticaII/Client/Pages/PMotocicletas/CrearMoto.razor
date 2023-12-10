@@ -34,8 +34,8 @@
             <ul>
                 <a href="/Inicio">Inicio</a>
                 <a href="#">Mi Perfil</a>
-                <a href="PMotocicletas/ListaMotocicletas/"> Mis Motos</a>
-                <a href="#">Mi Taller</a>
+                <a @onclick="Read"> Mis Motos</a>
+                <a @onclick="ReadTaller">Mi Taller</a>
            
             </ul>
 
@@ -89,7 +89,61 @@
     Motocicleta NuevaMotocicleta = new Motocicleta();
     [Parameter] public int login { get; set; }
 
+     @inject IJSRuntime JSRuntime
+       string userPreferences;
+    string storedUserPreferences;
 
+
+    private async Task Read()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/PMotocicletas/ListaMotocicletas/{IdUsuario}");
+
+       
+
+    }
+    private async Task ReadTaller()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/PTaller/ListaTaller/{IdUsuario}");
+
+
+
+    }
+    async Task ObtenerIdUsuario()
+    {
+        try
+        {
+
+            var apiUrl = $"api/RastrearId?correo={storedUserPreferences}";
+
+            var response = await http.GetAsync(apiUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                IdUsuario = await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                IdUsuario = "Error al obtener el ID del usuario";
+            }
+        }
+        catch (Exception ex)
+        {
+            IdUsuario = $"Error: {ex.Message}";
+        }
+    }
 
 
    

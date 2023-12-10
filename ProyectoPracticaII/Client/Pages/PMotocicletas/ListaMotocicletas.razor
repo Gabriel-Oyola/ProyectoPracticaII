@@ -29,7 +29,7 @@
                 <a href="/Inicio">Inicio</a>
                 <a href="#">Mi Perfil</a>
            
-                <a href="PTaller/ListaTaller/">Mi Taller</a>
+                <a @onclick="ReadTaller">Mi Taller</a>
                 <a href="#">Salir</a>
             </ul>
 
@@ -169,24 +169,26 @@
     string userPreferences;
     string storedUserPreferences;
 
-    private async Task Read()
+    
+    private async Task ReadTaller()
     {
 
         storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
 
 
 
-        ObtenerIdUsuario();
+        await ObtenerIdUsuario();
 
-        //Leer(int.Parse(IdUsuario));
+        NavManager.NavigateTo($"/PTaller/ListaTaller/{IdUsuario}");
+
+
 
     }
-
     async Task ObtenerIdUsuario()
     {
         try
         {
-          
+
             var apiUrl = $"api/RastrearId?correo={storedUserPreferences}";
 
             var response = await http.GetAsync(apiUrl);

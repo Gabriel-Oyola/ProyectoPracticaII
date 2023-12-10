@@ -1,5 +1,6 @@
 ﻿@page "/MiPerfil/{login:int}"
 @using ProyectoPracticaII.Client.Models;
+@using System.Text;
 @inject IHttpService http
 @inject NavigationManager NavigatorManager
 
@@ -43,24 +44,24 @@
 }
 else
 {
-    @foreach (var item in Usuarios)
-    {
+
+    
         <div class="datos">
 
         <label>Correo</label>
-        <td>@item.Correo</td>
+        <td>@Usuarios.Correo</td>
 
         <br />
         <br />
 
         <label>Nombre De Usuario</label>
-        <td>@item.NombreUsuario</td>
+        <td>@Usuarios.NombreUsuario</td>
 
         <br />
         <br />
 
         <label>Clave</label>
-        <td>@item.Clave</td>
+        <td>@Usuarios.Clave)</td>
 
         </div>
 
@@ -86,15 +87,15 @@ else
 
 @code {
     [Parameter] public int login { get; set; }
-    List<Usuario> Usuarios;
+    Usuario Usuarios;
 
 
-
-
+    
 
     protected override async Task OnInitializedAsync()
     {
         base.OnInitializedAsync();
+
         await Leer();
     }
 
@@ -102,10 +103,12 @@ else
     private async Task Leer()
     {
 
-        var respuesta = await http.Get<List<Usuario>>($"api/MostrarPerfil/{login}");
+        var respuesta = await http.Get<Usuario>($"api/MostrarPerfil/{login}");
+
         if (!respuesta.Error)
         {
             Usuarios = respuesta.Respuesta;
+          
         }
     }
 

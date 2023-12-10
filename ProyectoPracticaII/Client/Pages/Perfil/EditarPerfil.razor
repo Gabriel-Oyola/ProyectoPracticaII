@@ -1,4 +1,5 @@
 ﻿@using ProyectoPracticaII.Client.Models;
+
 @inject IHttpService http
 @inject NavigationManager NavigatorManager
 @page "/EditarPerfil/{login:int}"
@@ -39,6 +40,6 @@
 
     private void Cancelar()
     {
-        NavigatorManager.NavigateTo($"//MiPerfil/{usuarios.IdUsuario}");
+        NavigatorManager.NavigateTo($"/MiPerfil/{usuarios.IdUsuario}");
     }
 }

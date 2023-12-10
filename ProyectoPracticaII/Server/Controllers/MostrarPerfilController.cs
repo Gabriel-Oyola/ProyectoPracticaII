@@ -45,6 +45,8 @@ namespace ProyectoPracticaII.Server.Controllers
 
             return Ok(await motored01Context.Usuarios.ToListAsync());
 
+            
+
         }
         public static string ConvertToHexString(string hash)
         {

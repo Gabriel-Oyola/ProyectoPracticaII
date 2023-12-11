@@ -2,7 +2,8 @@
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components.Authorization;
 @using ProyectoPracticaII.Client.Models;
-@inject IHttpService http
+@inject IHttpService Ihttp
+@inject HttpClient http
 @inject NavigationManager NavigatorManager
 @inject AuthenticationStateProvider autenticacionProvider;
 @attribute [Authorize(Roles = "UsuarioRegistrado")]
@@ -18,17 +19,22 @@
 @code {
     Taller taller = new Taller();
     [Parameter] public int TallerId { get; set; }
-
+    string IdUsuario;
+    string userPreferences;
+    string storedUserPreferences;
+    @inject IJSRuntime JSRuntime
 
     protected async override Task OnInitializedAsync()
     {
         await Mostrar();
+        
     }
+    
 
 
     private async Task Mostrar()
     {
-        var respuesta = await http.Get<Taller>($"api/Taller/{TallerId}");
+        var respuesta = await Ihttp.Get<Taller>($"api/Taller/{TallerId}");
         if (respuesta.Error)
         {
             var body = respuesta.Respuesta;

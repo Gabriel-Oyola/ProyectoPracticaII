@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoPracticaII.Client.Models;
 
@@ -18,7 +19,7 @@ public partial class ReportesOpinione
     public string? Fecha { get; set; }
 
     public int? Rating { get; set; }
-
+    [Required(ErrorMessage = "Este campo es obligatorio completarlo.")]
     public string? Motivo { get; set; }
 
     public virtual Opinione? IdOpinionNavigation { get; set; }

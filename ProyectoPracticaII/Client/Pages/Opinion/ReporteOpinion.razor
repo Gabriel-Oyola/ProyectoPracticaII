@@ -44,12 +44,12 @@
  <section class="form-opinionReporte">
 
 <EditForm Model="NuevoReporteOpinion">
-
+            <DataAnnotationsValidator />
     <h4>Reportar una opinion</h4>
 
     <label>idUsuarioRC</label>
 
-    <InputNumber @bind-Value=NuevoReporteOpinion.IdUsuarioRc  readonly style="width: 100%;
+    <InputNumber @bind-Value=NuevoReporteOpinion.IdUsuarioRc readonly style="width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
 
     <label>idTaller</label>
@@ -59,10 +59,10 @@
 
     <label>idOpinion</label>
 
-    <InputNumber @bind-Value=NuevoReporteOpinion.IdOpinion readonly style="width: 100%;
+    <InputNumber @bind-Value=NuevoReporteOpinion.IdOpinion readonly  style="width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
 
-
+         
   
 
     <label>Comentario</label>
@@ -72,20 +72,26 @@
 
     <label>Fecha</label>
 
-    <InputText @bind-Value=NuevoReporteOpinion.Fecha readonly style="width: 100%;
+    <InputText @bind-Value=NuevoReporteOpinion.Fecha readonly  style="width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputText>
 
     <label>Rating</label>
 
-    <InputNumber @bind-Value=NuevoReporteOpinion.Rating readonly style="width: 100%;
+    <InputNumber @bind-Value=NuevoReporteOpinion.Rating readonly  style="width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
 
     <label>Motivo</label>
 
     <InputText @bind-Value=NuevoReporteOpinion.Motivo  style="width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputText>
+            <ValidationMessage For="@(() => NuevoReporteOpinion.Motivo)" />
 
-            <button class="btnC" @onclick="(()=>CrearReporteOpinion(NuevoReporteOpinion))">Nueva Opinion</button>
+            @if (camposVacios)
+            {
+                @mensaje
+            }
+
+            <button class="btnC" @onclick="(()=>HandleValidSubmit())">Nueva Opinion</button>
 
 </EditForm>
 
@@ -103,10 +109,14 @@
 
 @code {
     ReportesOpinione NuevoReporteOpinion = new ReportesOpinione();
-    [Parameter] public int login { get; set; }
+    List<ReportesOpinione> Reporte;
     [Parameter] public int opinion { get; set; }
     [Parameter] public int taller { get; set; }
     Opinione opinionEncontrada = new Opinione();
+    bool camposVacios = false;
+    string mensaje = "Por favor completa todos los campos.";
+
+
     protected override async Task OnInitializedAsync()
     {
         base.OnInitializedAsync();
@@ -117,13 +127,15 @@
         NuevoReporteOpinion.Comentario = opinionEncontrada.Comentario;
         NuevoReporteOpinion.Fecha = opinionEncontrada.Fecha;
         NuevoReporteOpinion.Rating = opinionEncontrada.Rating;
+
+        await ListaReporte();
     }
     private async Task BuscarOpinion()
     {
 
         try
         {
-            var response = await http.GetFromJsonAsync<Opinione>($"api/opinion/GetOpinionesPorIdOpinion/{opinion}");
+            var response = await http.GetFromJsonAsync<Opinione>($"api/opinion/{opinion}");
 
 
             if (response != null)
@@ -134,12 +146,45 @@
         }
         catch
         {
-            
+
+        }
+
+    }
+    private void HandleValidSubmit()
+    {
+        if (string.IsNullOrEmpty(NuevoReporteOpinion.Motivo))
+        {
+            camposVacios = true;
+        }
+        else
+        {
+
+            AgregarReporte();
+
+        }
+    }
+
+    void AgregarReporte()
+    {
+        // Verifica si ya existe una opinión con el mismo IdUsuario
+        if (Reporte.Any(reporte => reporte.IdUsuarioRc == NuevoReporteOpinion.IdUsuarioRc && reporte.IdTaller == NuevoReporteOpinion.IdTaller))
+        {
+            camposVacios = true;
+            mensaje = "Ya reportaste este taller";
+
+        }
+        else
+        {
+            CrearReporteOpinion(NuevoReporteOpinion);
         }
 
     }
 
-
+    private async Task ListaReporte()
+    {
+       var respuesta = await Ihttp.Get<List<ReportesOpinione>>($"api/ReporteOP/Lista");
+        Reporte = respuesta.Respuesta;
+    }
 
     public async Task CrearReporteOpinion(ReportesOpinione ReportesOpinione)
     {
@@ -149,7 +194,11 @@
             var body = resultado.HttpResponseMessage;
 
         }
-        // NavigatorManager.NavigateTo($"/PTaller/ListaTaller/{nuevaOpinion.IdUsuario}");
+        else
+        {
+            NavigatorManager.NavigateTo($"/PBTaller/BuscarTaller");
+        }
+
     }
 
 

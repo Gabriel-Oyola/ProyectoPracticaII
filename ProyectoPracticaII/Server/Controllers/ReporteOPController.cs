@@ -27,6 +27,14 @@ namespace ProyectoPracticaII.Server.Controllers
             return Ok(await GetReportesOpiniones());
         }
 
+        [HttpGet("Lista")]
+        public async Task<ActionResult<List<ReportesOpinione>>> GetMotocicleta()
+        {
+            var lista = await motored01Context.ReportesOpiniones.ToListAsync();
+            return Ok(lista);
+        }
+
+
         private async Task<List<ReportesOpinione>> GetReportesOpiniones()
         {
             return await motored01Context.ReportesOpiniones.ToListAsync();

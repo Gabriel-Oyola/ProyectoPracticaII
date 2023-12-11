@@ -33,22 +33,22 @@ namespace ProyectoPracticaII.Server.Controllers
             return opiniones;
         }
 
-        [HttpGet("GetOpinionesPorIdOpinion/{idOpinion}")]
-        public async Task<ActionResult<Opinione>> GetOpiPorId(int id)
-        {
-            var opinion = motored01Context.Opiniones.Where(op => op.IdOpinion == id).FirstOrDefaultAsync();
+        [HttpGet("{id:int}")]
 
+        public async Task<ActionResult<Opinione>> Get(int id)
+        {
+            var opinion = await motored01Context.Opiniones
+                                         .Where(e => e.IdOpinion == id)
+                                         //.Include(m => m.Matriculas)
+                                         .FirstOrDefaultAsync();
             if (opinion == null)
             {
-                return NotFound(); // Devuelve un error 404 si no se encuentra la opinión
+                return NotFound($"No existe la motocicleta de Id={id}");
             }
-
-            return Ok(opinion); // Devuelve la opinión si se encuentra
-
-
-
+            return opinion;
         }
 
+        
         private async Task<List<Opinione>> GetDbOpiniones()
         {
             return await motored01Context.Opiniones.ToListAsync();

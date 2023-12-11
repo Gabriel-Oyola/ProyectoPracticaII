@@ -1,8 +1,17 @@
 ﻿@page "/MiPerfil/{login:int}"
 @using ProyectoPracticaII.Client.Models;
 @using System.Text;
-@inject IHttpService http
+@inject IHttpService Ihttp
 @inject NavigationManager NavigatorManager
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@using ProyectoPracticaII.Client.extensiones;
+@inject AuthenticationStateProvider autenticacionProvider;
+@attribute [Authorize]
+@inject NavigationManager NavManager
+@inject HttpClient  Http
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,27 +54,25 @@
 else
 {
 
-    
-        <div class="datos">
-
-        <label>Correo</label>
-        <td>@Usuarios.Correo</td>
-
-        <br />
-        <br />
-
-        <label>Nombre De Usuario</label>
-        <td>@Usuarios.NombreUsuario</td>
-
-        <br />
-        <br />
-
-        <label>Clave</label>
-        <td>@Usuarios.Clave)</td>
-
+    <div class="datos">
+    <div class="contenido">
+        <h2>TUS DATOS</h2>
+        <div class="info">
+            <label>Correo:</label>
+            <div>@Usuarios.Correo</div>
         </div>
+        <div class="info">
+            <label>Nombre de Usuario:</label>
+            <div>@Usuarios.NombreUsuario</div>
+        </div>
+                
+                
+        <button class="EditarPerfilBoton"><a href="/Validacion">Editar Perfil</a></button>
+    </div>
+</div>
+           
 
-            <button class="EditarPerfilBoton"><a href="/Validacion">Editar Perfil</a></button>
+          
     }
     
 
@@ -105,7 +112,7 @@ else
     private async Task Leer()
     {
 
-        var respuesta = await http.Get<Usuario>($"api/MostrarPerfil/{login}");
+        var respuesta = await Ihttp.Get<Usuario>($"api/MostrarPerfil/{login}");
 
         if (!respuesta.Error)
         {

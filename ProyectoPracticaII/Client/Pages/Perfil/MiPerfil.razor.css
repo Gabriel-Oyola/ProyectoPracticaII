@@ -1,104 +1,255 @@
-﻿* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+﻿@media only screen and (max-width: 600px) {
+   
 
-html {
-    height: 100%;
-}
-
-html, body {
-}
-
-header {
-    width: 100%;
-    height: 50px;
-    box-shadow: 1px 1px 5px #bd0003;
-    background-color: #000;
-}
-
-#Menu {
-    width: 450px;
-    padding-top: 13px;
-    margin: auto;
-    text-align: center;
-}
-
-    #Menu ul a {
-        color: #ffff;
-        text-decoration: none;
-        font: 16px Roboto;
-        padding: 13px 20px 20px 20px;
-        border-radius: 30px;
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
+    html {
+        height: 100%;
+    }
 
-        #Menu ul a:hover {
-            color: #f2f2f2;
-            background: #bd0003;
-            font-size: 20px;
-        }
+    html, body {
+    }
 
-.form-opinion {
-    width: 600px;
-    background: black;
-    padding: 30px;
-    margin: auto;
-    margin-top: 100px;
-    border-radius: 4px;
-    font-family: 'calibri';
-    color: white;
-    box-shadow: 7px 13px 37px #000;
-    display: block;
-}
+    header {
+        width: 100%;
+        height: 50px;
+        box-shadow: 1px 1px 5px #bd0003;
+        background-color: #000;
+    }
 
-    .form-opinion h4 {
-        font-size: 22px;
-        margin-bottom: 20px;
+    #Menu {
+        width: 450px;
+        padding-top: 13px;
+        margin: auto;
         text-align: center;
     }
 
-.btnC {
-    width: 100%;
-    background: #bd0003;
-    border: none;
-    padding: 12px;
-    color: white;
-    margin: 16px 0;
-    font-size: 16px;
+        #Menu ul a {
+            color: #ffff;
+            text-decoration: none;
+            font: 16px Roboto;
+            padding: 13px 20px 20px 20px;
+            border-radius: 30px;
+        }
+
+
+            #Menu ul a:hover {
+                color: #f2f2f2;
+                background: #bd0003;
+                font-size: 20px;
+            }
+
+    .form-opinion {
+        width: 600px;
+        background: black;
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+        display: block;
+    }
+
+        .form-opinion h4 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+    .btnC {
+        width: 100%;
+        background: #bd0003;
+        border: none;
+        padding: 12px;
+        color: white;
+        margin: 16px 0;
+        font-size: 16px;
+    }
+
+
+    Footer {
+        color: #bd0003;
+        background-color: black;
+        text-align: center;
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        padding: 2rem 8%;
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .datos {
+        background-color: #000;
+        border: 2px solid #bd0003;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin: auto;
+        margin-top:13%;
+        max-width: 60%; /* Ajusta el ancho máximo según sea necesario */
+    }
+
+    .contenido {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info {
+        margin-bottom: 20px;
+    }
+
+        .info label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    .EditarPerfilBoton {
+        background-color: #bd0003;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+        .EditarPerfilBoton a {
+            color: white;
+            text-decoration: none;
+        }
 }
 
-Footer {
-    color: #bd0003;
-    background-color: black;
-    text-align: center;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    padding: 2rem 8%;
-    margin-top: auto;
-}
+@media only screen and (min-width: 601px) {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-.datos {
-    width: 13%;
-    background-color: black;
-    border: none;
-    padding: 12px;
-    color: white;
-    margin: 158px 174px 13px 811px;
-    font-size: 16px;
-    box-shadow: 0 0 30px #bd0003;
-    border-radius: 20px;
-}
+    html {
+        height: 100%;
+    }
 
-.EditarPerfilBoton {
-    text-decoration: none;
-    color: white;
-    background-color: #bd0003;
-    padding: 10px 20px;
-    border-radius: 20px;
-    transition: all .3s ease;
-    justify-content: center;
-    margin: 1px 1px 293px 874px
+    html, body {
+    }
+
+    header {
+        width: 100%;
+        height: 50px;
+        box-shadow: 1px 1px 5px #bd0003;
+        background-color: #000;
+    }
+
+    #Menu {
+        width: 450px;
+        padding-top: 13px;
+        margin: auto;
+        text-align: center;
+    }
+
+        #Menu ul a {
+            color: #ffff;
+            text-decoration: none;
+            font: 16px Roboto;
+            padding: 13px 20px 20px 20px;
+            border-radius: 30px;
+        }
+
+
+            #Menu ul a:hover {
+                color: #f2f2f2;
+                background: #bd0003;
+                font-size: 20px;
+            }
+
+    .form-opinion {
+        width: 600px;
+        background: black;
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+        display: block;
+    }
+
+        .form-opinion h4 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+    .btnC {
+        width: 100%;
+        background: #bd0003;
+        border: none;
+        padding: 12px;
+        color: white;
+        margin: 16px 0;
+        font-size: 16px;
+    }
+
+
+    Footer {
+        color: #bd0003;
+        background-color: black;
+        text-align: center;
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        padding: 2rem 8%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .datos {
+        background-color: #000;
+       
+        border: 2px solid #bd0003;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin:  auto;
+        margin-top:13%;
+        max-width: 60%; /* Ajusta el ancho máximo según sea necesario */
+    }
+
+    .contenido {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info {
+        margin-bottom: 20px;
+    }
+
+        .info label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    .EditarPerfilBoton {
+        background-color: #bd0003;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+        .EditarPerfilBoton a {
+            color: white;
+            text-decoration: none;
+        }
 }

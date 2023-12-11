@@ -11,9 +11,33 @@
 
 
 @inject IJSRuntime JSRuntime
+<head>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
 
+
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-color: #404040;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            font-family: sans-serif;
+            letter-spacing: 0.03em;
+            line-height: 1.6;
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+</head>
   <Section class="Form-Registro">
-        <h4> Login</h4>
+        <h4> Validacion</h4>
         <EditForm Model="login">
           
 
@@ -24,7 +48,10 @@
             <InputText @bind-Value=login.Clave type="password" style=" width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputText>
 
-
+        @if (MostrarMensaje)
+        {
+            @mensaje
+        }
 
             <button class="btnC" @onclick="()=>{ValidarUsuario();}">Entrar</button>
 
@@ -39,35 +66,49 @@
     string userPreferences;
     string storedUserPreferences;
     @inject IJSRuntime JSRuntime
-
+    string mensaje;
+    bool MostrarMensaje;
 
     private LoginDTO login = new LoginDTO();
 
     private async Task ValidarUsuario()
     {
-        var loginResponse = await http.PostAsJsonAsync<LoginDTO>("/api/MostrarPerfil/Login", login);
-        if (loginResponse.IsSuccessStatusCode)
-        {
-            var sesionUsuario = await loginResponse.Content.ReadFromJsonAsync<SesionDTO>();
-            var autenticacionExt = (AutenticacionExtension)autenticacionProvider;
-            await autenticacionExt.ActualizarEstadoAutenticacion(sesionUsuario);
+        bool aprobado;
+        await ReadPerfil(); 
 
-            ReadPerfil();
+        if(storedUserPreferences == login.Correo)
+        {
+            var loginResponse = await http.PostAsJsonAsync<LoginDTO>("/api/MostrarPerfil/Login", login);
+
+            if (loginResponse.IsSuccessStatusCode)
+            {
+              
+            
+                var sesionUsuario = await loginResponse.Content.ReadFromJsonAsync<SesionDTO>();
+                var autenticacionExt = (AutenticacionExtension)autenticacionProvider;
+                await autenticacionExt.ActualizarEstadoAutenticacion(sesionUsuario);
+
+                await ObtenerIdUsuario();
+
+                NavManager.NavigateTo($"/EditarPerfil/{IdUsuario}");
+            }
+            mensaje = "El correo o la contraseña es incorrecta";
+            MostrarMensaje = true;
+
         }
+        else
+        {
+            mensaje = "El correo o la contraseña es incorrecta";
+            MostrarMensaje = true;
+        }
+
+       
     }
 
     private async Task ReadPerfil()
     {
 
         storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
-
-
-
-        await ObtenerIdUsuario();
-
-        NavManager.NavigateTo($"/EditarPerfil/{IdUsuario}");
-
-
 
     }
     async Task ObtenerIdUsuario()

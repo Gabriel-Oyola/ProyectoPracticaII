@@ -182,7 +182,7 @@
     <header>
         <section id="Menu">
             <ul>
-                <a href="#">Mi Perfil</a>
+                <a @onclick="ReadPerfil">Mi Perfil</a>
                 <a @onclick="Read">Mis Motos</a>
                 <a @onclick="ReadTaller">Mi Taller</a>
                 <a @onclick="CerrarSesion" href="javascript:void(0)">Salir</a>
@@ -254,6 +254,20 @@
     string storedUserPreferences;
     @inject IJSRuntime JSRuntime
 
+    private async Task ReadPerfil()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/MiPerfil/{IdUsuario}");
+
+
+
+    }
     private async Task Read()
     {
 

@@ -1,4 +1,4 @@
-﻿@page "/PTaller/CrearT"
+﻿@page "/PTaller/CrearT/{login:int}"
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components.Authorization;
 @using ProyectoPracticaII.Client.Models;
@@ -32,8 +32,8 @@
             <ul>
                 <a href="/Inicio">Inicio</a>
                 <a href="#">Mi Perfil</a>
-                <a href="PTaller/ListaTaller/"> Mi Taller</a>
-                  <a href="PMotocicletas/ListaMotocicletas/">Mis Motos</a>
+                <a href="PTaller/ListaTaller/@login"> Mi Taller</a>
+                  <a href="PMotocicletas/ListaMotocicletas/@login">Mis Motos</a>
                 @*https://localhost:44392/PTaller/CrearT*@
             </ul>
 
@@ -47,7 +47,7 @@
             <h4> CARGAR DATOS DE TU TALLER</h4>
             <label>IdUsuario</label>
 
-            <InputNumber @bind-Value=NuevoTaller.IdUsuario style=" width: 100%;
+            <InputNumber @bind-Value=NuevoTaller.IdUsuario readonly style=" width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
 
      <label>Nombre</label>
@@ -97,7 +97,18 @@
 @code {
     Taller NuevoTaller = new Taller();
     [Parameter] public int login { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
 
+        NuevoTaller.IdUsuario = login;
+
+
+
+
+
+
+    }
 
 
 

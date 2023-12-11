@@ -47,7 +47,7 @@
 
     <br />
     <div class="btnCentrado">
-        <a class="btnCrear" href="/PMotocicletas/CrearMoto"> REGISTRAR UNA NUEVA MOTO</a>
+        <a class="btnCrear" @onclick="ReadCrearM"> REGISTRAR UNA NUEVA MOTO</a>
       
     </div>
    
@@ -169,7 +169,20 @@
     string userPreferences;
     string storedUserPreferences;
 
-    
+    private async Task ReadCrearM()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/PMotocicletas/CrearMoto/{IdUsuario}");
+
+
+
+    }
     private async Task ReadTaller()
     {
 

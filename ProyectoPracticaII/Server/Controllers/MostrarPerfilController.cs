@@ -27,7 +27,7 @@ namespace ProyectoPracticaII.Server.Controllers
             {
                 return NotFound($"No existe el usuario de Id={id}");
             }
-            ConvertToHexString(User.Clave);
+         
             return Ok(User);
         }
 
@@ -40,12 +40,15 @@ namespace ProyectoPracticaII.Server.Controllers
         {
 
             var DbObjeto = await motored01Context.Usuarios.FindAsync(objeto.IdUsuario);
+
+            
             if (DbObjeto == null)
                 return BadRequest("no se encuentra");
             DbObjeto.NombreUsuario = objeto.NombreUsuario;
             DbObjeto.Correo = objeto.Correo;
             DbObjeto.Clave = CalcularHash(objeto.Clave);
-
+           
+           
             await motored01Context.SaveChangesAsync();
 
             return Ok(await motored01Context.Usuarios.ToListAsync());
@@ -53,16 +56,7 @@ namespace ProyectoPracticaII.Server.Controllers
             
 
         }
-        public static string ConvertToHexString(string hash)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (byte b in hash)
-            {
-                sb.Append(b.ToString("x2")); // Convierte cada byte a su representación hexadecimal
-            }
-            return sb.ToString();
-        }
-
+  
 
         [HttpPost]
         [Route("Login")]

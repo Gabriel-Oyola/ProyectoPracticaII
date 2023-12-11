@@ -2,6 +2,15 @@
 @inject HttpClient http
 @inject IHttpService Ihttp
 @inject NavigationManager NavigatorManager
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@using ProyectoPracticaII.Client.extensiones;
+@inject AuthenticationStateProvider autenticacionProvider;
+@attribute [Authorize]
+@inject NavigationManager NavManager
+@inject HttpClient http
+@inject IHttpService Ihttp
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +35,7 @@
         <section id="Menu">
             <ul>
                 <a href="/Inicio">Inicio</a>
-                <a href="#">Mi Perfil</a>
+                <a href="/MiPerfil/">Mi Perfil</a>
                 <a href="PMotocicletas/ListaMotocicletas/"> Mis Motos</a>
                 <a href="#">Mi Taller</a>
 
@@ -36,27 +45,36 @@
     </header>
     <section class="form-usuarios">
 
-        <InputText @bind-Value=usuarios.Clave style=" width: 100%;
-    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;">Año</InputText>
-
         @if (usuarios.Clave == usuarios.Clave)
         {
-            <EditForm Model="usuarios">
+
+            <EditForm Model="usuarios" OnValidSubmit="HandleValidSubmit">
                 <h4>ACTUALIZAR LOS DATOS DE TU PERFIL</h4>
-
-
-                
+               
+                <DataAnnotationsValidator />
                 <label>Nombre de usuario</label>
                 <InputText @bind-Value=usuarios.NombreUsuario style=" width: 100%;
-    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"> </InputText>
+                   background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; 
+                    border: 1px solid #bd0003; font-size:18px; color: white;"> 
+                </InputText>
+                <ValidationMessage For="@(() => usuarios.NombreUsuario)" />
+                
                 <label>Correo</label>
                 <InputText @bind-Value=usuarios.Correo style=" width: 100%;
-    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"> </InputText>
+                  background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"> </InputText>
+                <ValidationMessage For="@(() => usuarios.Correo)" />
+
                 <label>Clave</label>
-                
+                <InputText @bind-Value=usuarios.Clave type="password"style=" width: 100%;
+                  background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"> </InputText>
+                <ValidationMessage For="@(() => usuarios.Clave)" />
+                    <br/>
 
-
-                <button class="btnC" @onclick="(()=>ActualizarUsuario(usuarios))">Actualizar</button>
+                @if (camposVacios)
+                {
+                    @mensaje
+                }
+                <button class="btnC" @onclick="(()=>HandleValidSubmit())">Actualizar</button>
                 <button class="btnC" @onclick="onCancel"> Cancelar</button>
             </EditForm>
         }
@@ -78,20 +96,75 @@
 </html>
 
 @code {
-    
-        
-
+    string IdUsuarioL;
+    string userPreferences;
+    string storedUserPreferences;
+    @inject IJSRuntime JSRuntime
 
     [Parameter] public EventCallback onValidSubmit { get; set; }
     [Parameter] public EventCallback onCancel { get; set; }
     [Parameter] public Usuario usuarios { get; set; }
 
+    bool camposVacios = false;
+    string mensaje = "Por favor completa todos los campos.";
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
 
+    }
+    private async Task ReadPerfil()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+        await ObtenerIdUsuario();
+
+    }
+    async Task ObtenerIdUsuario()
+    {
+        try
+        {
+
+            var apiUrl = $"api/RastrearId?correo={storedUserPreferences}";
+
+            var response = await http.GetAsync(apiUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                IdUsuarioL = await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                IdUsuarioL = "Error al obtener el ID del usuario";
+            }
+        }
+        catch (Exception ex)
+        {
+            IdUsuarioL = $"Error: {ex.Message}";
+        }
+    }
+
+
+    private void HandleValidSubmit()
+    {
+        if (string.IsNullOrEmpty(usuarios.NombreUsuario) || string.IsNullOrEmpty(usuarios.Correo) )
+        {
+            camposVacios = true;
+        }
+        else
+        {
+            // Aquí puedes manejar la lógica para enviar los datos si no hay campos vacíos
+            ActualizarUsuario(usuarios);
+        }
+    }
 
     public async Task ActualizarUsuario(Usuario usuario)
     {
-        var result = await Ihttp.Put($"api/MostrarPerfil/{usuario.IdUsuario}", usuarios);
-        NavigatorManager.NavigateTo($"/PMotocicletas/ListaMotocicletas/{usuarios.IdUsuario}");
+        
+        
+        
+            var result = await Ihttp.Put($"api/MostrarPerfil/{usuario.IdUsuario}", usuarios);
+            NavigatorManager.NavigateTo($"/MiPerfil/{usuario.IdUsuario}");
+        
+       
     }
 
         

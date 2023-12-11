@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoPracticaII.Client.Models;
 
@@ -11,9 +12,11 @@ using ProyectoPracticaII.Client.Models;
 namespace ProyectoPracticaII.Client.Migrations
 {
     [DbContext(typeof(Motored01Context))]
-    partial class Motored01ContextModelSnapshot : ModelSnapshot
+    [Migration("20231211052724_kkk")]
+    partial class kkk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,8 +275,23 @@ namespace ProyectoPracticaII.Client.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<float?>("DNI")
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("real");
+
                     b.Property<string>("NombreUsuario")
                         .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Pais")
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Provincia")
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");

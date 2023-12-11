@@ -35,9 +35,9 @@
         <section id="Menu">
             <ul>
                 <a href="/Inicio">Inicio</a>
-                <a href="/MiPerfil/">Mi Perfil</a>
-                <a href="PMotocicletas/ListaMotocicletas/"> Mis Motos</a>
-                <a href="#">Mi Taller</a>
+                <a @onclick="ReadPerfilP">Mi Perfil</a>
+                <a @onclick="ReadMoto"> Mis Motos</a>
+                <a @onclick="ReadTaller">Mi Taller</a>
 
             </ul>
 
@@ -151,7 +151,7 @@
         }
         else
         {
-            // Aquí puedes manejar la lógica para enviar los datos si no hay campos vacíos
+          
             ActualizarUsuario(usuarios);
         }
     }
@@ -166,7 +166,49 @@
         
        
     }
+  
 
-        
-        
+    private async Task ReadPerfilP()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/MiPerfil/{IdUsuarioL}");
+
+
+
     }
+    private async Task ReadMoto()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/PMotocicletas/ListaMotocicletas/{IdUsuarioL}");
+
+
+
+    }
+    private async Task ReadTaller()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/PTaller/ListaTaller/{IdUsuarioL}");
+
+
+
+    }
+
+}

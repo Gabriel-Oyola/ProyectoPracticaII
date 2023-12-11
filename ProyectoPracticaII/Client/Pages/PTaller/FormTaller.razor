@@ -34,9 +34,9 @@
         <section id="Menu">
             <ul>
                 <a href="/Inicio">Inicio</a>
-                <a href="#">Mi Perfil</a>
-                <a href="PMotocicletas/ListaMotocicletas/"> Mis Motos</a>
-                <a href="#">Mi Taller</a>
+                <a @onclick="ReadPerfil">Mi Perfil</a>
+                <a @onclick="Read"> Mis Motos</a>
+                <a @onclick="ReadTaller">Mi Taller</a>
 
             </ul>
 
@@ -113,7 +113,34 @@
         ReadTaller();
         
     }
+    private async Task ReadPerfil()
+    {
 
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/MiPerfil/{IdUsuario}");
+
+
+
+    }
+    private async Task Read()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/PMotocicletas/ListaMotocicletas/{IdUsuario}");
+
+
+
+    }
 
     private async Task ReadTaller()
     {
@@ -151,6 +178,7 @@
             IdUsuario = $"Error: {ex.Message}";
         }
     }
+
 
     public async Task ActualizarTaller(Taller taller)
     {

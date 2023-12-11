@@ -3,7 +3,7 @@
 @using ProyectoPracticaII.Client.Models;
 @inject HttpClient http
 @inject IHttpService Ihttp
-
+@inject NavigationManager NavManager
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components.Authorization;
 @attribute [Authorize(Roles = "UsuarioRegistrado")]
@@ -23,9 +23,9 @@
         <section id="Menu">
             <ul>
                 <a href="/Inicio">Inicio</a>
-                <a href="#">Mi Perfil</a>
-                <a href="PMotocicletas/ListaMotocicletas/">Mis Motos</a>
-                <a href="#">Salir</a>
+                <a @onclick="ReadPerfil">Mi Perfil</a>
+                <a @onclick="Read">Mis Motos</a>
+                <a @onclick="ReadTaller">Mi taller</a>
             </ul>
 
         </section>
@@ -96,5 +96,73 @@
         tallerTops = await http.GetFromJsonAsync<List<TallerTop>>("api/ListaTop");
     }
  
-   
+    string IdUsuario;
+    string userPreferences;
+    string storedUserPreferences;
+    @inject IJSRuntime JSRuntime
+
+    private async Task ReadPerfil()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/MiPerfil/{IdUsuario}");
+
+
+
+    }
+    private async Task Read()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/PMotocicletas/ListaMotocicletas/{IdUsuario}");
+
+
+
+    }
+    private async Task ReadTaller()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/PTaller/ListaTaller/{IdUsuario}");
+
+
+
+    }
+    async Task ObtenerIdUsuario()
+    {
+        try
+        {
+
+            var apiUrl = $"api/RastrearId?correo={storedUserPreferences}";
+
+            var response = await http.GetAsync(apiUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                IdUsuario = await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                IdUsuario = "Error al obtener el ID del usuario";
+            }
+        }
+        catch (Exception ex)
+        {
+            IdUsuario = $"Error: {ex.Message}";
+        }
+    }
 }

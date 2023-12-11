@@ -31,7 +31,7 @@
         <section id="Menu">
             <ul>
                 <a href="/Inicio">Inicio</a>
-                <a href="#">Mi Perfil</a>
+                <a @onclick="ReadPerfil">Mi Perfil</a>
                 <a @onclick="Read"> Mis Motos</a>
                 <a @onclick="ReadTaller">Mi Taller</a>
 
@@ -88,7 +88,20 @@
     string IdUsuario;
     string userPreferences;
     string storedUserPreferences;
+    private async Task ReadPerfil()
+    {
 
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        NavManager.NavigateTo($"/MiPerfil/{IdUsuario}");
+
+
+
+    }
     private async Task Read()
     {
 
@@ -103,6 +116,7 @@
 
 
     }
+
     private async Task ReadTaller()
     {
 

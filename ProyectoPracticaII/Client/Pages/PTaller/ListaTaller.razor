@@ -1,6 +1,4 @@
-﻿
-
-@page "/PTaller/ListaTaller/{login:int}"
+﻿@page "/PTaller/ListaTaller/{login:int}"
 
 @using ProyectoPracticaII.Client.Models;
 @inject HttpClient http
@@ -210,4 +208,6 @@
     {
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
+
+  
 }

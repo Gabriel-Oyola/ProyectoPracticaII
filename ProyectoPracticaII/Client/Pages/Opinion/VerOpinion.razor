@@ -1,12 +1,58 @@
-﻿@page "/Opinion/verOpinion"
+﻿@page "/Opinion/verOpinion/{taller:int}"
 @using ProyectoPracticaII.Client.Models;
-
-
-
 @inject IHttpService http
 @inject NavigationManager NavigatorManager
 
-<h3>VerOpinion</h3>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <header>
+        <section id="Menu">
+            <ul>
+                <a href="/Inicio">Inicio</a>
+                <a href="#">Mi Perfil</a>
+                <a href="PMotocicletas/ListaMotocicletas/">Mis Motos</a>
+                <a href="#">Salir</a>
+            </ul>
+
+        </section>
+    </header>
+
+    <br />
+
+
+
+
+    <br />
+
+    <h3>Opiniones del taller</h3>
+
+    <br />
+   
+   
+    <div id="main-container">
+        
+        <table>
+            <thead>
+                <tr>
+
+                    <th>Fecha</th>
+                    <th>Comentario</th>
+                    <th>Rating</th>
+                  
+        
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+          
 
 @if (opiniones == null)
 {
@@ -20,29 +66,35 @@ else
 {
     @foreach (var item in opiniones)
     {
-       
-            
+      <tr>
+        
             <td>@item.Fecha</td>
             <td>@item.Comentario</td>
             <td>@item.Rating</td>
-            <td>editar</td>
-        
-       
 
-
-
-
-
-
-
-
-
-
-}
+            
+            
+      </tr>
+      
+    }
    
 }
 
+ </table>
+    </div>
 
+
+    
+
+    <Footer>
+    <p> Motored &copy;. Todos los derechos reservados</p>
+    </Footer>
+</body>
+
+
+
+
+</html>
 
 
 

@@ -1,8 +1,10 @@
-﻿@page "/ReportesOpiniones/{login:int}"
+﻿@page "/Opinion/verOpinionAdministrador/{taller:int}"
 @using ProyectoPracticaII.Client.Models;
+
+
+@inject HttpClient http
 @inject IHttpService Ihttp
 @inject NavigationManager NavigatorManager
-@inject HttpClient http
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +34,7 @@
 
     <br />
 
-    <h3>Reportes del taller</h3>
+    <h3>Opiniones del taller</h3>
 
     <br />
    
@@ -43,9 +45,8 @@
             <thead>
                 <tr>
 
-                    <th>Comentario</th>
-                    <th>Motivo</th>
                     <th>Fecha</th>
+                    <th>Comentario</th>
                     <th>Rating</th>
                   
         
@@ -55,34 +56,32 @@
             </thead>
           
 
-
-
-@if (ReportarOpinion == null)
+@if (opiniones == null)
 {
     <tr>Cargando...</tr>
 }
-else if (ReportarOpinion.Count == 0)
+else if (opiniones.Count == 0)
 {
-    <tr>No existen Reportes de opiniones</tr>
+    <tr>No existen opiniones del taller</tr>
 }
 else
 {
-@foreach (var item in ReportarOpinion)
-{
-    <tr>
-    <td>@item.Comentario</td>
-    <td>@item.Motivo</td>
-    <td>@item.Fecha</td>
-    <td>@item.Rating</td>
+    @foreach (var item in opiniones)
+    {
+      <tr>
+        
+            <td>@item.Fecha</td>
+            <td>@item.Comentario</td>
+            <td>@item.Rating</td>
 
-    <td>
-            <a class="btn btn-warning" @onclick="()=>{EliminarReporte(item.IdReporte);RefreshPage();}">Eliminar Reporte</a>
-    </td>
-
-    </tr>
-
-       
-}
+            <td>
+                            <a class="btn btn-warning" @onclick="()=>{EliminarOpinion(item.IdOpinion);RefreshPage();}">Eliminar Opinion</a>
+            </td>
+                        
+      </tr>
+      
+    }
+   
 }
 
  </table>
@@ -107,10 +106,14 @@ else
 
 
 
+
 @code {
     [Parameter] public int taller { get; set; }
     [Parameter] public int login { get; set; }
-    List<ReportesOpinione> ReportarOpinion;
+    List<Opinione> opiniones;
+    List<Usuario> usuarios;
+    List<(Opinione, Usuario)> ListaCombinada;
+    
     [Inject] NavigationManager NavigationManager { get; set; }
 
 
@@ -126,13 +129,21 @@ else
     private async Task Leer()
     {
 
-        var respuesta = await Ihttp.Get<List<ReportesOpinione>>($"api/ListaReporteOpinion/{login}");
+        var respuesta = await Ihttp.Get<List<Opinione>>($"api/ListaOpinion/{taller}");
         if (!respuesta.Error)
         {
-            ReportarOpinion = respuesta.Respuesta;
+            opiniones = respuesta.Respuesta;
         }
     }
 
+    
+    
+    public async Task EliminarOpinion(int id)
+    {
+        var resultado = await http.DeleteAsync($"api/OpinionAdministrador/{id}");
+
+        // await Leer(id);
+    }
 
     private void RefreshPage()
     {
@@ -145,5 +156,9 @@ else
 
         // await Leer(id);
     }
+
+
+
+
 
 }

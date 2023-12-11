@@ -47,6 +47,8 @@
                     <th>Motivo</th>
                     <th>Fecha</th>
                     <th>Rating</th>
+                    <th>Id opinion</th>
+                    <th>Id taller</th>
                   
         
                     <th></th>
@@ -74,6 +76,8 @@ else
     <td>@item.Motivo</td>
     <td>@item.Fecha</td>
     <td>@item.Rating</td>
+    <td>@item.IdOpinion</td>
+    <td>@item.IdTaller</td>
 
     <td>
             <a class="btn btn-warning" @onclick="()=>{EliminarReporte(item.IdReporte);RefreshPage();}">Eliminar Reporte</a>

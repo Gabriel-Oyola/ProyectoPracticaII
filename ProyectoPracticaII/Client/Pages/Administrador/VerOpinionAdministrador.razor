@@ -48,7 +48,7 @@
                     <th>Fecha</th>
                     <th>Comentario</th>
                     <th>Rating</th>
-                  
+                    <th>Id opinion</th>
         
                     <th></th>
                     <th></th>
@@ -73,7 +73,8 @@ else
             <td>@item.Fecha</td>
             <td>@item.Comentario</td>
             <td>@item.Rating</td>
-
+            <td>@item.IdOpinion</td>
+           
             <td>
                             <a class="btn btn-warning" @onclick="()=>{EliminarOpinion(item.IdOpinion);RefreshPage();}">Eliminar Opinion</a>
             </td>

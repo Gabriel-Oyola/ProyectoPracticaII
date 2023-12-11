@@ -20,7 +20,7 @@ namespace ProyectoPracticaII.Server.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<List<ReportesOpinione>>> GetOpinion(int id)
         {
-            var lista = await motored01Context.ReportesOpiniones.Where(e => e.IdReporte == id).ToListAsync();
+            var lista = await motored01Context.ReportesOpiniones.Where(e => e.IdUsuarioRc == id).ToListAsync();
             return Ok(lista);
         }
 

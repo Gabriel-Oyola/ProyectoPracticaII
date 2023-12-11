@@ -39,16 +39,17 @@ namespace ProyectoPracticaII.Server.Controllers
                 sesionDTO.Nombre = usuario_encontrado.NombreUsuario;
                 sesionDTO.Correo = login.Correo;
                 sesionDTO.Rol = "UsuarioRegistrado";
-                
+                return StatusCode(StatusCodes.Status200OK, sesionDTO);
             }
             if(login.Correo=="invitado@email.com" && login.Clave=="1234")
             {
                 sesionDTO.Nombre = "Invitado";
                 sesionDTO.Correo = login.Correo;
                 sesionDTO.Rol = "invitado";
+                return StatusCode(StatusCodes.Status200OK, sesionDTO);
             }
 
-            return StatusCode(StatusCodes.Status200OK, sesionDTO); 
+            return StatusCode(StatusCodes.Status404NotFound, "Usuario no encontrado");
 
         }
 

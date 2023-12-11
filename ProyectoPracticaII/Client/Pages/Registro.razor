@@ -34,19 +34,26 @@
     <Section class="Form-Registro">
         <h4> Registrarse</h4>
         <EditForm Model="NuevoUsuario">
+            <DataAnnotationsValidator />
             <label>Nombre</label>
             <InputText @bind-Value=NuevoUsuario.NombreUsuario style=" width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputText>
+            <ValidationMessage For="@(() => NuevoUsuario.NombreUsuario)" />
             <label>Correo</label>
             <InputText @bind-Value=NuevoUsuario.Correo style=" width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;" ></InputText>
+            <ValidationMessage For="@(() => NuevoUsuario.Correo)" />
             <label>Clave</label>
             <InputText @bind-Value=NuevoUsuario.Clave type="password" style=" width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputText>
+            <ValidationMessage For="@(() => NuevoUsuario.Clave)" />
 
+            @if (camposVacios)
+            {
+                @mensaje
+            }
 
-
-            <button class="btnC" @onclick="(()=>CrearUsuario(NuevoUsuario))">Crear Usuario</button>
+            <button class="btnC" @onclick="(()=>HandleValidSubmit())">Crear Usuario</button>
 
 
 
@@ -69,6 +76,8 @@
 
 @code {
     Usuario NuevoUsuario = new Usuario();
+    bool camposVacios = false;
+    string mensaje = "Debes completar todos los campos";
 
     public async Task CrearUsuario(Usuario usuario)
     {
@@ -79,5 +88,19 @@
 
         }
         NavigatorManager.NavigateTo("/");
+    }
+
+
+    private void HandleValidSubmit()
+    {
+        if (string.IsNullOrEmpty(NuevoUsuario.NombreUsuario) || string.IsNullOrEmpty(NuevoUsuario.Correo)|| string.IsNullOrEmpty(NuevoUsuario.Clave))
+        {
+            camposVacios = true;
+        }
+        else
+        {
+
+            CrearUsuario(NuevoUsuario);
+        }
     }
 }

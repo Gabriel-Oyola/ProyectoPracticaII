@@ -1,4 +1,4 @@
-﻿@page "/Opinion/verOpinion/{taller:int}"
+﻿@page "/Opinion/verOpinion/{Idtaller:int}"
 @using ProyectoPracticaII.Client.Models;
 @inject IHttpService http
 @inject NavigationManager NavigatorManager
@@ -25,63 +25,39 @@
         </section>
     </header>
 
-    <br />
-
-
-
-
-    <br />
-
-    <h3>Opiniones del taller</h3>
-
-    <br />
-   
-   
-    <div id="main-container">
-        
+    @if (opiniones != null)
+    {
         <table>
             <thead>
                 <tr>
-
-                    <th>Fecha</th>
+                   
                     <th>Comentario</th>
+                    <th>Fecha</th>
                     <th>Rating</th>
-                  
-        
-                    <th></th>
-                    <th></th>
+                    <th>-</th>
                 </tr>
             </thead>
-          
-
-@if (opiniones == null)
-{
-    <tr>Cargando...</tr>
-}
-else if (opiniones.Count == 0)
-{
-    <tr>No existen opiniones del taller</tr>
-}
-else
-{
-    @foreach (var item in opiniones)
-    {
-      <tr>
-        
-            <td>@item.Fecha</td>
-            <td>@item.Comentario</td>
-            <td>@item.Rating</td>
-
-            
-            
-      </tr>
-      
+            <tbody>
+                @foreach (var opinion in opiniones)
+                {
+                    <tr>
+                        <td>@opinion.Comentario</td>
+                        <td>@opinion.Fecha</td>
+                        <td>@opinion.Rating</td>
+                          <td>
+                            <ProyectoPracticaII.Client.Pages.PTallerTop.StarRating Rating="@Convert.ToInt32(opinion.Rating)" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
-   
-}
+    else
+    {
+        <p>No hay opiniones disponibles.</p>
+    }
 
- </table>
-    </div>
+
 
 
     
@@ -101,12 +77,9 @@ else
 
 
 @code {
-    [Parameter] public int taller { get; set; }
+    [Parameter] public int Idtaller { get; set; }
     [Parameter] public int login { get; set; }
     List<Opinione> opiniones;
-    List<Usuario> usuarios;
-    List<(Opinione, Usuario)> ListaCombinada;
-    List<Taller> tallerr;
 
    
 
@@ -121,7 +94,7 @@ else
     private async Task Leer()
     {
 
-        var respuesta = await http.Get<List<Opinione>>($"api/ListaOpinion/{taller}");
+        var respuesta = await http.Get<List<Opinione>>($"api/Opinion/GetOpinionesPorIdTaller/{Idtaller}");
         if (!respuesta.Error)
         {
             opiniones = respuesta.Respuesta;

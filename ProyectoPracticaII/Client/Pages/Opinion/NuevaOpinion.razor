@@ -1,7 +1,8 @@
 ﻿@using ProyectoPracticaII.Client.Models;
-@inject IHttpService http
+@inject IHttpService Ihttp
+@inject HttpClient http
 @inject NavigationManager NavigatorManager
-@page "/Opinion/NuevaOpinion/{taller:int}"
+@page "/Opinion/NuevaOpinion/{IdTaller:int}"
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,33 +40,41 @@
     <br />
     <section class="form-opinion">
 
-        <EditForm Model="nuevaOpinion">
-
+        <EditForm Model="nuevaOpinion" OnValidSubmit="HandleValidSubmit">
+             <DataAnnotationsValidator />
             <h4>Publicar nueva opinion</h4>
 
 
             <label>idusuario</label>
-            <InputNumber @bind-Value=nuevaOpinion.IdUsuario style="width: 100%;
+            <InputNumber @bind-Value=nuevaOpinion.IdUsuario readonly style="width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
 
             <label>idtaller</label>
-            <InputNumber @bind-Value=nuevaOpinion.IdTaller style="width: 100%;
+            <InputNumber @bind-Value=nuevaOpinion.IdTaller readonly style="width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
 
             <label>Comentario</label>
             <InputText @bind-Value=nuevaOpinion.Comentario style="width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputText>
-
+            <ValidationMessage For="@(() => nuevaOpinion.Comentario)" />
             <label>Fecha</label>
-            <InputText @bind-Value=nuevaOpinion.Fecha style="width: 100%;
+            <InputText @bind-Value=nuevaOpinion.Fecha readonly style="width: 100%;
     background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputText>
 
             <label>Rating</label>
-            <InputNumber @bind-Value=nuevaOpinion.Rating style="width: 100%;
-    background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;"></InputNumber>
+            <select @bind="nuevaOpinion.Rating" class="form-control" style="width: 100%; background: #000; padding:10px; border-radius:4px; margin-bottom: 16px; border: 1px solid #bd0003; font-size:18px; color: white;">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+            <ValidationMessage For="@(() => nuevaOpinion.Rating)" />
+            @if (camposVacios)
+            {
+                @mensaje
+            }
 
-
-            <button class="btnC" @onclick="(()=>CrearOpinion(nuevaOpinion))">Nueva Opinion</button>
+            <button class="btnC" @onclick="(()=>HandleValidSubmit())">Nueva Opinion</button>
 
         </EditForm>
     </section>
@@ -91,22 +100,119 @@
 
 
 @code {
+    List<Opinione> opiniones = new List<Opinione>();
     Opinione nuevaOpinion = new Opinione();
     [Parameter] public int login { get; set; }
-    [Parameter] public int taller { get; set; }
+    [Parameter] public int IdTaller { get; set; }
+    string IdUsuario;
+    bool camposVacios = false;
+    string mensaje = "Por favor completa todos los campos.";
+    @inject IJSRuntime JSRuntime
 
-  
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
 
 
+        nuevaOpinion.IdTaller = IdTaller;
+        await Read();
+        nuevaOpinion.Fecha = DateTime.Today.ToString("yyyy-MM-dd");
+
+        await Leer();
+
+
+
+    }
+
+    private async Task Leer()
+    {
+
+        var respuesta = await Ihttp.Get<List<Opinione>>($"api/Opinion/GetOpinionesPorIdTaller/{IdTaller}");
+        if (!respuesta.Error)
+        {
+            opiniones = respuesta.Respuesta;
+        }
+    }
+    string userPreferences;
+    string storedUserPreferences;
+
+    private async Task Read()
+    {
+
+        storedUserPreferences = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", "correo");
+
+
+
+        await ObtenerIdUsuario();
+
+        
+
+
+
+    }
+    async Task ObtenerIdUsuario()
+    {
+        try
+        {
+
+            var apiUrl = $"api/RastrearId?correo={storedUserPreferences}";
+
+            var response = await http.GetAsync(apiUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                IdUsuario = await response.Content.ReadAsStringAsync();
+                nuevaOpinion.IdUsuario = int.Parse(IdUsuario);
+            }
+            else
+            {
+                IdUsuario = "Error al obtener el ID del usuario";
+            }
+        }
+        catch (Exception ex)
+        {
+            IdUsuario = $"Error: {ex.Message}";
+        }
+    }
+
+    
+    private void HandleValidSubmit()
+    {
+        if (string.IsNullOrEmpty(nuevaOpinion.Comentario) || string.IsNullOrEmpty(nuevaOpinion.Rating.ToString()) )
+        {
+            camposVacios = true;
+        }
+        else
+        {
+
+            AgregarOpinion();
+
+        }
+    }
+
+    void AgregarOpinion()
+    {
+        // Verifica si ya existe una opinión con el mismo IdUsuario
+        if (opiniones.Any(opinion => opinion.IdUsuario == nuevaOpinion.IdUsuario && opinion.IdTaller == nuevaOpinion.IdTaller))
+        {
+            camposVacios = true;
+            mensaje = "SOLO PUEDES PUBLICAR UNA RESEÑA";
+           
+        }
+        else
+        {
+            CrearOpinion(nuevaOpinion);
+        }
+
+    }
     public async Task CrearOpinion(Opinione opinione)
     {
-        var resultado = await http.Post<Opinione>("api/Opinion", nuevaOpinion);
+        var resultado = await Ihttp.Post<Opinione>("api/Opinion", nuevaOpinion);
         if (resultado.Error)
         {
             var body = resultado.HttpResponseMessage;
 
         }
-        // NavigatorManager.NavigateTo($"/PTaller/ListaTaller/{nuevaOpinion.IdUsuario}");
+        NavigatorManager.NavigateTo($"/PBTaller/BuscarTaller");
     }
 
 

@@ -82,19 +82,17 @@
                     <td>@tallerEncontrado.NombreTaller</td>
                     <td>@tallerEncontrado.Direccion</td>
                     
-                    @*       <td>
-                            <a class="btn btn-primary" href="/PMotocicletas/EditarMoto/@item.IdMoto"> Editar</a>
+                           <td>
+                        <a class="btn btn-primary" href="/Opinion/verOpinion/@IdLocalizado"> Ver Opiniones</a>
                         </td>
 
                         <td>
-                            <button class="btn btn-warning" @onclick="()=>EliminarMoto(item.IdMoto)">
-                                Eliminar
+                        <a class="btn btn-danger" href="/Opinion/NuevaOpinion/@tallerEncontrado.IdTaller">
+                               Realizar una opinion
+                            </a>
+                        </td>
 
-                            </button>
-                        </td>*@
-
-                    <td><a href="//opinion/@tallerEncontrado.IdTaller">Dar Opinion</a></td>
-                    <td><a href="/veropinion">Ver reseñas de otros usuarios</a></td>
+                  
                 
 
                 
@@ -127,6 +125,7 @@
     private Taller tallerEncontrado;
     private bool busquedaRealizada = false;
     private string NoEncontrado= null;
+    int IdLocalizado;
     [Inject]
     private HttpClient HttpClient { get; set; }
     List<Taller> taller;
@@ -148,6 +147,34 @@
         }
     }
 
+    //async Task ObtenerIdTaller(Taller taller)
+    //{
+    //    try
+    //    {
+
+    //        var apiUrl = $"api/ListaBTC/Redireccionar/{tallerEncontrado.NombreTaller}";
+
+    //        var response = await http.GetAsync(apiUrl);
+    //        if (response.IsSuccessStatusCode)
+    //        {
+    //            IdLocalizado = await response.Content.ReadAsStringAsync();
+    //            NavManager.NavigateTo($"/Opinion/verOpinion/{int.Parse(IdLocalizado)}");
+    //        }
+    //        else
+    //        {
+    //            IdLocalizado = "Error al obtener el ID del usuario";
+    //        }
+
+
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        IdLocalizado = $"Error: {ex.Message}";
+    //    }
+
+
+    
+
 
 
     private async Task BuscarTalleres()
@@ -165,6 +192,7 @@
             if (response != null)
             {
                 tallerEncontrado = response;
+                IdLocalizado = response.IdTaller;
             }
             else if (Cresponse.StatusCode == System.Net.HttpStatusCode.NotFound)
             {

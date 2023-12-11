@@ -48,5 +48,23 @@ namespace ProyectoPracticaII.Server.Controllers
             var lista = await _Context.Motocicletas.Where(e => e.IdUsuario == id).ToListAsync();
             return Ok(lista);
         }
+
+       
+
+        //[HttpGet("RatrearIdT/{nombre}")]
+        //public async Task<ActionResult<int>> Get(string nombre)
+        //{
+        //    var IdT = await _Context.Tallers
+        //                                 .Where(e => e.NombreTaller == nombre)
+        //                                 .Select(u => u.IdTaller)
+        //                                 //.Include(m => m.Matriculas)
+        //                                 .FirstOrDefaultAsync();
+        //    if (    IdT == null)
+        //    {
+        //        return NotFound($"No existe usuario con el correo ={nombre}");
+        //    }
+        //    return IdT;
+        //}
+
     }
 }

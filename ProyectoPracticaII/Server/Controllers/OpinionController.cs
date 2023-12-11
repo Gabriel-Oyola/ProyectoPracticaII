@@ -33,7 +33,21 @@ namespace ProyectoPracticaII.Server.Controllers
             return opiniones;
         }
 
+        [HttpGet("GetOpinionesPorIdOpinion/{idOpinion}")]
+        public async Task<ActionResult<Opinione>> GetOpiPorId(int id)
+        {
+            var opinion = motored01Context.Opiniones.Where(op => op.IdOpinion == id).FirstOrDefaultAsync();
 
+            if (opinion == null)
+            {
+                return NotFound(); // Devuelve un error 404 si no se encuentra la opinión
+            }
+
+            return Ok(opinion); // Devuelve la opinión si se encuentra
+
+
+
+        }
 
         private async Task<List<Opinione>> GetDbOpiniones()
         {

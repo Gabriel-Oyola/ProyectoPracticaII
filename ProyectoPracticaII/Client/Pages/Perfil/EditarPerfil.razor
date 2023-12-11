@@ -3,7 +3,10 @@
 @inject IHttpService http
 @inject NavigationManager NavigatorManager
 @page "/EditarPerfil/{login:int}"
-
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@inject AuthenticationStateProvider autenticacionProvider;
+@attribute [Authorize]
 
 
 <FormUsuarios usuarios="usuarios" onCancel="Cancelar"/>

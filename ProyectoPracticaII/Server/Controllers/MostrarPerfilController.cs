@@ -64,7 +64,7 @@ namespace ProyectoPracticaII.Server.Controllers
         public async Task<ActionResult> Login([FromBody] LoginDTO login)
         {
             SesionDTO sesionDTO = new SesionDTO();
-            ULT email = new ULT();
+           
 
             Usuario usuario_encontrado = await GetUsuario(login.Correo, CalcularHash(login.Clave));
 
@@ -73,7 +73,7 @@ namespace ProyectoPracticaII.Server.Controllers
                 sesionDTO.Nombre = usuario_encontrado.NombreUsuario;
                 sesionDTO.Correo = login.Correo;
                 sesionDTO.Rol = "UsuarioRegistrado";
-                email.GuardarDato(login.Correo);
+             
             }
           
 
